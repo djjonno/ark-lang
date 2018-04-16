@@ -53,7 +53,7 @@ primary        → "true" | "false" | "nil"
 ;;;;		UTILITIES
 
 
-lambda 	   		 → "lambda" IDENTIFIER? ( "|" parameters )? (( "->" expression ) | block )
+lambda 	   		 → "lambda" IDENTIFIER? ( "|" parameters )? ( "->" (expression | block) )
 parameters     → IDENTIFIER ( "," IDENTIFIER )*
 arguments      → (expression | lambda) ( "," ( expression | lambda ) )*
 
