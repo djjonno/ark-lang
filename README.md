@@ -1,27 +1,26 @@
 # Ark Lang
 Functional language with Lisp style syntax and some syntactic sugar for great readability.
 
+#### Ark
+The idea of creating a whole unified platform to build software is something I find to be super exciting.  I am to 
+create a fully-fledged platform, end-to-end, including a comprehensive standard library.
+
+I want to emphasize performance of the programmer and the interpreter by adopting a simple Lisp like, context-free 
+grammar with a simple learning curve; We are aiming to keep the syntax light.
+
+Ark will eventually be strongly typed and will be a good hybrid between classical imperative OOP and Functional language
+styles - leaning more towards the functional paradigm - aim to get the best of both worlds.
+
 #### My Motivations
-Why am I creating this language? Purely to learn. I love de-mistifying things we commonly take for granted as programmers. 
+###### Yet another hobbyist lang.
+
+Why am I creating this language? Mostly to learn. I love de-mistifying things we programmers take for granted. 
 Language implementation is no exception and there is so much to gain by having a better understanding of what goes into 
-building a programming language.
+building a programming language and how they work.
 
 Will this be production ready? Technically yes. The interpreter will eventually be written in C++ and should offer 
 performance on par with something like Python. Even though I am building this language for learning purposes, I will not
 be cutting corners just for the sake of getting something to work - it will be built correctly, for sure.
-
-#### Ark
-The idea of creating a whole unified platform to build software is something I find to be super exciting.  I am to 
-create a fully-fledged platform, end-to-end.
-
-I want to emphasize performance of the programmer and the interpreter by adopting a simple Lisp like, context free 
-grammar. Learning curve will be relatively small.
-
-Ark will be strongly typed and will be a good hybrid between classical imperative OOP and Functional language styles - 
-leaning more towards the functional paradigm.
- 
-Ark is general purpose - there will be more preference on systems-level applications but certainly not limited to this. 
-You could build a web server, web app, systems programming (distributed), scripting language.
 
 ### Language Spec
 
@@ -78,6 +77,7 @@ Iterate over collections using `item:collection` enumerator syntax.
 ```
 let nums = [1,2,3,4]
 (n:nums) {
+  // code here ...
   (print n)
 }
 ```
