@@ -29,6 +29,8 @@ be cutting corners just for the sake of getting something to work - it will be b
 
 ### Language Spec
 
+[Checkout the Grammar](https://github.com/andjonno/ark-lang/blob/master/resources/grammar.txt)
+
 ##### Comments
 ```
 ;; this is a comment
