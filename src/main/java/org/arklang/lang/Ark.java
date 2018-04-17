@@ -38,8 +38,9 @@ public class Ark {
     InputStreamReader input = new InputStreamReader(System.in);
     BufferedReader reader = new BufferedReader(input);
 
-    System.out.println(" _ _ / ");
-    System.out.println("(// /( " + version);
+    System.out.println();
+    System.out.println("   _ _ / ");
+    System.out.println("  (// /( " + version);
     System.out.println();
 
     for (;;) {

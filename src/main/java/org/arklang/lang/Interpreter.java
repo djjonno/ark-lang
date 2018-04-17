@@ -36,6 +36,9 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     Object right = evaluate(expr.right);
 
     switch (expr.operator.type) {
+      /*
+      Number Operations
+       */
       case PLUS:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -91,6 +94,58 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left % (int)right;
         }
+      case GREATER:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left > (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left > (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left > (int)right;
+        }
+      case GREATER_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left >= (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left >= (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left >= (int)right;
+        }
+      case LESS:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left < (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left < (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left < (int)right;
+        }
+      case LESS_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left <= (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left <= (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left <= (int)right;
+        }
+      /*
+      Boolean operations
+       */
+      case AND:
+        return isTruthy(left) && isTruthy(right);
+      case OR:
+        return isTruthy(left) || isTruthy(right);
+
     }
 
     return null;
@@ -150,6 +205,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   private boolean isTruthy(Object object) {
     if (object == null) return false;
     if (object instanceof Boolean) return (Boolean)object;
+    if (object instanceof Number) return !(object).equals(0);
     return true;
   }
 }
