@@ -50,7 +50,13 @@ public class Ark {
 
   private static void run(String source) {
     List<Token> tokens = new Scanner(source).scanTokens();
-    System.out.println(tokens);
+
+    Parser parser = new Parser(tokens);
+    List<Stmt> statements = parser.parse();
+
+    for (Stmt s : statements) {
+      System.out.println(new AstPrinter().print(((Stmt.Expression) s).expression));
+    }
   }
 
   static void error(int line, String message) {

@@ -39,10 +39,8 @@ block          → "{" declaration* "}"
 
 
 expression     → operation
-operation      → ( "(" IDENTIFIER arguments* ")" ( "->" operation )* ) | logic_or
-logic_or       → ( "or" logic_and )* logic_and
-logic_and      → ( "and" logicals )* logicals
-logicals       → ( ( "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" ) unary )* unary
+operation      → ( "(" IDENTIFIER arguments* ")" ( "->" operation )* ) | logical
+logical        → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) unary )* unary
 unary          → ( "!" | "-" ) unary | primary
 primary        → "true" | "false" | "nil"
                | INT | DOUBLE | CHAR | STRING | IDENTIFIER | LAMBDA

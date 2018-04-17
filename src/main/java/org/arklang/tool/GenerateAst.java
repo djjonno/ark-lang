@@ -13,19 +13,16 @@ public class GenerateAst {
     }
     String outputDir = args[0];
     defineAst(outputDir, "Expr", Arrays.asList(
-            "Assign   : Token name, Expr value",
-            "Binary   : Expr left, Token operator, Expr right",
-            "Call     : Expr callee, Token paren, List<Expr> arguments",
-            "Grouping : Expr expression",
-            "Literal  : Object value",
-            "Logical  : Expr left, Token operator, Expr right",
-            "Unary    : Token operator, Expr right",
-            "Variable : Token name"
-    ));
+        "Operation: Token operator, Expr expression",
+        "Logical  : Token operator, Expr left, Expr right",
+        "Unary    : Token operator, Expr right",
+        "Literal  : Object value",
+        "Variable : Token name"
+        ));
     defineAst(outputDir, "Stmt", Arrays.asList(
 //            "Block      : List<Stmt> statements",
 //            "Class      : Token name, List<Stmt.Function> staticMethods, List<Stmt.Function> methods",
-//            "Expression : Expr expression",
+            "Expression : Expr expression"
 //            "Function   : Token name, List<Token> parameters, List<Stmt> body",
 //            "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
 //            "While      : Expr condition, Stmt body",
@@ -42,7 +39,7 @@ public class GenerateAst {
     String path = outputDir + "/" + baseName + ".java";
     PrintWriter writer = new PrintWriter(path, "UTF-8");
 
-    writer.println("package org.hyperion.hype;");
+    writer.println("package org.arklang.lang;");
     writer.println("");
     writer.println("import java.util.List;");
     writer.println("");

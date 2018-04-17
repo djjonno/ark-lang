@@ -29,6 +29,7 @@ public class Scanner {
     keywords.put("break",   BREAK);
     keywords.put("true",    TRUE);
     keywords.put("false",   FALSE);
+    keywords.put("nil",     NIL);
     keywords.put("id",      ID);
     keywords.put("int",     INT);
     keywords.put("long",    LONG);
