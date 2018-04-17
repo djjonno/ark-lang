@@ -26,9 +26,9 @@ statement      → exprStmt
 
 exprStmt       → expression
 assignmentStmt → IDENTIFIER "=" assignmentStmt
-               | expression;
+               | expression
 ifStmt         → "if" "(" expression ")" statement ( "else" statement )?
-sendStmt     	 → "send" expression
+sendStmt     	 → "(" "send" expression ")"
 whileStmt      → "while" "(" expression ")" statement
 block          → "{" declaration* "}"
 
