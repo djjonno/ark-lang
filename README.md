@@ -117,8 +117,8 @@ This is probably my favourite feature of Ark. Using `sends` adds so much clarity
 from the left to the right. Rather than nesting function calls, expression are evaluated from the left to the right...
 
 ```
-[1,2,3,4] -> (pow 2)
-    -> (filter lambda | x -> (< x 5)
+[1,2,3,4] -> (pow 2) ;; [1,4,9,1,6]
+    -> (filter lambda | x -> (< x 5)) ;; [1,4]
     -> (lambda | x -> Point(x:x, 0)) ;; [Point(1,0), Point(4,0)]
 ```
 
