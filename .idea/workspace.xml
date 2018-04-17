@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db7dd276-ad30-4f94-b1b4-beae70f22be2" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java" afterPath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Parser.java" afterPath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Parser.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Scanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/arklang/lang/Scanner.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/arklang/lang/TokenType.java" afterPath="$PROJECT_DIR$/src/main/java/org/arklang/lang/TokenType.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="148" column="48" lean-forward="false" selection-start-line="148" selection-start-column="48" selection-end-line="148" selection-end-column="48" />
+            <state relative-caret-position="189">
+              <caret line="160" column="44" lean-forward="true" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="44" />
               <folding>
                 <element signature="e#433#434#0" expanded="true" />
                 <element signature="e#460#461#0" expanded="true" />
@@ -53,10 +51,10 @@
                 <element signature="e#534#535#0" expanded="true" />
                 <element signature="e#605#606#0" expanded="true" />
                 <element signature="e#626#627#0" expanded="true" />
-                <element signature="e#5549#5550#0" expanded="true" />
-                <element signature="e#5576#5577#0" expanded="true" />
-                <element signature="e#5645#5646#0" expanded="true" />
-                <element signature="e#5666#5667#0" expanded="true" />
+                <element signature="e#6433#6434#0" expanded="true" />
+                <element signature="e#6460#6461#0" expanded="true" />
+                <element signature="e#6529#6530#0" expanded="true" />
+                <element signature="e#6550#6551#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -102,7 +100,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Parser.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Parser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/arklang/lang/Parser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="66">
@@ -168,8 +166,8 @@
         <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/Ark.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/TokenType.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/Scanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/Parser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java" />
       </list>
     </option>
   </component>
@@ -208,6 +206,41 @@
             <path>
               <item name="lang" type="b2602c69:ProjectViewProjectNode" />
               <item name="arklang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="arklang" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -522,10 +555,10 @@
             <element signature="e#534#535#0" expanded="true" />
             <element signature="e#605#606#0" expanded="true" />
             <element signature="e#626#627#0" expanded="true" />
-            <element signature="e#5549#5550#0" expanded="true" />
-            <element signature="e#5576#5577#0" expanded="true" />
-            <element signature="e#5645#5646#0" expanded="true" />
-            <element signature="e#5666#5667#0" expanded="true" />
+            <element signature="e#6433#6434#0" expanded="true" />
+            <element signature="e#6460#6461#0" expanded="true" />
+            <element signature="e#6529#6530#0" expanded="true" />
+            <element signature="e#6550#6551#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -720,25 +753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="148" column="48" lean-forward="false" selection-start-line="148" selection-start-column="48" selection-end-line="148" selection-end-column="48" />
-          <folding>
-            <element signature="e#433#434#0" expanded="true" />
-            <element signature="e#460#461#0" expanded="true" />
-            <element signature="e#500#501#0" expanded="true" />
-            <element signature="e#534#535#0" expanded="true" />
-            <element signature="e#605#606#0" expanded="true" />
-            <element signature="e#626#627#0" expanded="true" />
-            <element signature="e#5549#5550#0" expanded="true" />
-            <element signature="e#5576#5577#0" expanded="true" />
-            <element signature="e#5645#5646#0" expanded="true" />
-            <element signature="e#5666#5667#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/arklang/lang/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
@@ -753,6 +767,25 @@
             <element signature="e#2007#2008#0" expanded="true" />
             <element signature="e#2037#2038#0" expanded="true" />
             <element signature="e#2077#2078#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/arklang/lang/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="160" column="44" lean-forward="true" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="44" />
+          <folding>
+            <element signature="e#433#434#0" expanded="true" />
+            <element signature="e#460#461#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#534#535#0" expanded="true" />
+            <element signature="e#605#606#0" expanded="true" />
+            <element signature="e#626#627#0" expanded="true" />
+            <element signature="e#6433#6434#0" expanded="true" />
+            <element signature="e#6460#6461#0" expanded="true" />
+            <element signature="e#6529#6530#0" expanded="true" />
+            <element signature="e#6550#6551#0" expanded="true" />
           </folding>
         </state>
       </provider>

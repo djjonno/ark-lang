@@ -138,6 +138,29 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left <= (int)right;
         }
+      case BANG_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left != (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left != (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left != (int)right;
+        }
+      case EQUAL_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)left == (int)right;
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return (int)left == (double)right;
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return (double)left == (int)right;
+        }
+
       /*
       Boolean operations
        */
