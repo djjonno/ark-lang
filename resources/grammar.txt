@@ -64,8 +64,8 @@ arguments      → (expression | lambda) ( "," ( expression | lambda ) )*
 
 
 INT 					 → DIGIT+
-DOUBLE         → DIGIT+ ( "." DIGIT+ )? ;
-STRING         → '"' <any char except '"'>* '"' ;
-IDENTIFIER     → ALPHA ( ALPHA | DIGIT )* ;
-ALPHA          → 'a' ... 'z' | 'A' ... 'Z' | '_' ;
-DIGIT          → '0' ... '9' ;
+DOUBLE         → DIGIT+ ( "." DIGIT+ )?
+STRING         → '"' <any char except '"'>* '"'
+IDENTIFIER     → ALPHA ( ALPHA | DIGIT )*
+ALPHA          → 'a' ... 'z' | 'A' ... 'Z' | '_'
+DIGIT          → '0' ... '9'
