@@ -5,7 +5,7 @@ import java.util.List;
 abstract class Expr {
   interface Visitor<R> {
     R visitOperationExpr(Operation expr);
-    R visitLogicalExpr(Logical expr);
+    R visitBinaryExpr(Binary expr);
     R visitUnaryExpr(Unary expr);
     R visitLiteralExpr(Literal expr);
     R visitVariableExpr(Variable expr);
@@ -23,15 +23,15 @@ abstract class Expr {
     final Token operator;
     final Expr expression;
   }
-  static class Logical extends Expr {
-    Logical(Token operator, Expr left, Expr right) {
+  static class Binary extends Expr {
+    Binary(Token operator, Expr left, Expr right) {
       this.operator = operator;
       this.left = left;
       this.right = right;
     }
 
     <R> R accept(Visitor<R> visitor) {
-      return visitor.visitLogicalExpr(this);
+      return visitor.visitBinaryExpr(this);
     }
 
     final Token operator;

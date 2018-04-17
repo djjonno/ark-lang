@@ -31,7 +31,7 @@ public enum TokenType {
   /*
   Built-ins & Literals Types
    */
-  ID, INT, LONG, DOUBLE, CHAR, STRING, BOOL, LIST, LAMBDA, IDENTIFIER, DICT
+  ID, INT, DOUBLE, CHAR, STRING, BOOL, LIST, LAMBDA, IDENTIFIER, DICT
 
   ,
 

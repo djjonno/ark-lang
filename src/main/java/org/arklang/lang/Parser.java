@@ -15,8 +15,8 @@ public class Parser {
     this.tokens = tokens;
   }
 
-  List<Stmt> parse() {
-    List<Stmt> expressions = new ArrayList<>();
+  List<Stmt.Expression> parse() {
+    List<Stmt.Expression> expressions = new ArrayList<>();
 
     while (!isAtEnd()) {
       expressions.add(new Stmt.Expression(expression()));
@@ -43,7 +43,7 @@ public class Parser {
       Token operator = previous();
       Expr left = expression();
       Expr right = expression();
-      return new Expr.Logical(operator, left, right);
+      return new Expr.Binary(operator, left, right);
     }
     return unary();
   }
@@ -63,7 +63,7 @@ public class Parser {
     if (match(TRUE)) return new Expr.Literal(true);
     if (match(NIL)) return new Expr.Literal(null);
 
-    if (match(INT, DOUBLE, STRING, LONG, CHAR)) {
+    if (match(INT, DOUBLE, STRING, CHAR)) {
       return new Expr.Literal(previous().literal);
     }
 
@@ -122,4 +122,6 @@ public class Parser {
     Ark.error(token, message);
     return new ParseError();
   }
+
+  // TODO: Add panic mode - synchronise
 }

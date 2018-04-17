@@ -32,7 +32,6 @@ public class Scanner {
     keywords.put("nil",     NIL);
     keywords.put("id",      ID);
     keywords.put("int",     INT);
-    keywords.put("long",    LONG);
     keywords.put("double",  DOUBLE);
     keywords.put("char",    CHAR);
     keywords.put("string",  STRING);

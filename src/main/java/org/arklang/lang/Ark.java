@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Ark {
 
+  private static final Interpreter interpreter = new Interpreter();
+
   final static String version = "0.1";
   static boolean hadError = false;
   static boolean hadRuntimeError = false;
@@ -52,11 +54,11 @@ public class Ark {
     List<Token> tokens = new Scanner(source).scanTokens();
 
     Parser parser = new Parser(tokens);
-    List<Stmt> statements = parser.parse();
+    List<Stmt.Expression> statements = parser.parse();
 
-    for (Stmt s : statements) {
-      System.out.println(new AstPrinter().print(((Stmt.Expression) s).expression));
-    }
+    if (hadError) return;
+
+    interpreter.interpret(statements);
   }
 
   static void error(int line, String message) {
