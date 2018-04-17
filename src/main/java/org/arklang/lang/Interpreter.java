@@ -145,6 +145,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return isTruthy(left) && isTruthy(right);
       case OR:
         return isTruthy(left) || isTruthy(right);
+      case XOR:
+        return isTruthy(left) ^ isTruthy(right);
 
     }
 

@@ -23,6 +23,7 @@ public class Scanner {
     keywords.put("else",    ELSE);
     keywords.put("and",     AND);
     keywords.put("or",      OR);
+    keywords.put("xor",     XOR);
     keywords.put("@",       ARG_POS);
     keywords.put("send",    SEND);
     keywords.put("while",   WHILE);

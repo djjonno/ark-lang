@@ -38,7 +38,7 @@ public class Parser {
     /*
     "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%"
      */
-    while (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
+    while (match(OR, AND, XOR, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT)) {
       Token operator = previous();
       Expr left = expression();
