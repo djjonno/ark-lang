@@ -76,6 +76,7 @@ be cutting corners just for the sake of getting something to work - it will be b
 (^ 1 2)     ;; 3
 (& 3 1)     ;; 1
 (<< 1 2)    ;; 4
+(>> 2 1)    ;; 1
 (>>> 3 1)   ;; 1
 (| 3 1)     ;; 3
 ~0          ;; -1 (bitwise compliment)
@@ -111,7 +112,7 @@ let nums = [1,2,3,4]
 ```
 (lambda filter | c:list, f:lambda -> {
   let a = []
-  (i:a) {
+  (i:c) {
     if (f i) {
       (add a i)
     }
