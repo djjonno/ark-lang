@@ -23,7 +23,6 @@ public class Scanner {
     keywords.put("else",    ELSE);
     keywords.put("and",     AND);
     keywords.put("or",      OR);
-    keywords.put("xor",     XOR);
     keywords.put("@",       ARG_POS);
     keywords.put("send",    SEND);
     keywords.put("while",   WHILE);
@@ -84,8 +83,32 @@ public class Scanner {
       case '|': addToken(PIPE); break;
       case '!': addToken(match('=') ? BANG_EQUAL : BANG); break;
       case '=': addToken(match('=') ? EQUAL_EQUAL : EQUAL); break;
-      case '<': addToken(match('=') ? LESS_EQUAL : LESS); break;
-      case '>': addToken(match('=') ? GREATER_EQUAL : GREATER); break;
+      case '^': addToken(CARET); break;
+      case '&': addToken(AMPERSAND); break;
+      case '~': addToken(TILDE); break;
+      case '<': {
+        if (match('=')) {
+          addToken(LESS_EQUAL);
+        } else if (match('<')) {
+          addToken(LEFT_SHIFT);
+        } else {
+          addToken(LESS);
+        }
+      } break;
+      case '>': {
+        if (match('=')) {
+          addToken(GREATER_EQUAL);
+        } else if (match('>')) {
+          if (match('>')) {
+            addToken(U_RIGHT_SHIFT);
+          } else {
+            addToken(RIGHT_SHIFT);
+          }
+        } else {
+          addToken(GREATER);
+        }
+
+      } break;
       case ';': {
         if (!match(';')) {
           Ark.error(line, "Unexpected character. Did you mean ';;'?");

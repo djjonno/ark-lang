@@ -27,19 +27,22 @@ public class Parser {
 
   private Expr expression() {
     while (match(LEFT_PAREN)) {
-      Expr expr = or();
+      Expr expr = binary();
       consume(RIGHT_PAREN, "Expect ')' after expression.");
       return expr;
     }
     return unary(); // unary
   }
 
-  private Expr or() {
+  private Expr binary() {
     /*
-    "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%"
+    "or" | "and" | "!=" | "==" | ">" | ">=" |
+    "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%"
+    ""
      */
-    while (match(OR, AND, XOR, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
-        LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT)) {
+    while (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
+        LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
+        AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
       Expr left = expression();
       Expr right = expression();
@@ -49,7 +52,7 @@ public class Parser {
   }
 
   private Expr unary() {
-    if (match(BANG, MINUS)) {
+    if (match(BANG, MINUS, TILDE)) {
       Token operator = previous();
       Expr right = unary();
       return new Expr.Unary(operator, right);

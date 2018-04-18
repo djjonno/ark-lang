@@ -162,14 +162,34 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
 
       /*
-      Boolean operations
+      Bitwise Operations
+       */
+      case AMPERSAND:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left & (int)right;
+      case CARET:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left ^ (int)right;
+      case PIPE:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left | (int)right;
+      case LEFT_SHIFT:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left << (int)right;
+      case RIGHT_SHIFT:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left >> (int)right;
+      case U_RIGHT_SHIFT:
+        checkIntegerOperands(expr.operator, left, right);
+        return (int)left >>> (int)right;
+
+      /*
+      Logical operations
        */
       case AND:
         return isTruthy(left) && isTruthy(right);
       case OR:
         return isTruthy(left) || isTruthy(right);
-      case XOR:
-        return isTruthy(left) ^ isTruthy(right);
 
     }
 
@@ -191,6 +211,9 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (right instanceof Double) {
           return -(double)right;
         }
+      case TILDE:
+        checkIntegerOperand(expr.operator, right);
+        return ~(int) right;
     }
 
     return null;
@@ -224,6 +247,18 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   private void checkNumberOperands(Token operator, Object op1, Object op2) {
     if (!(op1 instanceof Number) || !(op2 instanceof Number)) {
       throw new RuntimeError(operator, "Operands must be numeric.");
+    }
+  }
+
+  private void checkIntegerOperand(Token operator, Object op1) {
+    if (!(op1 instanceof Integer)) {
+      throw new RuntimeError(operator, "Operand must be an integer.");
+    }
+  }
+
+  private void checkIntegerOperands(Token operator, Object op1, Object op2) {
+    if (!(op1 instanceof Integer) || !(op2 instanceof Integer)) {
+      throw new RuntimeError(operator, "Operands must be integers.");
     }
   }
 
