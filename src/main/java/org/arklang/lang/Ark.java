@@ -44,7 +44,7 @@ public class Ark {
     System.out.println();
 
     for (;;) {
-      System.out.print(")  ");
+      System.out.print("@  ");
       run(reader.readLine());
 
       hadError = false;

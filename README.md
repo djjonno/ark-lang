@@ -153,5 +153,11 @@ from the left to the right. Rather than nesting function calls, expression are e
 - Syntax Themes for Sublime, Atom, etc
 
 
+#### Dev Install
+
+1. Open Ark prompt `$ ./ark`
+2. Or, execute an ark file `$ ./ark [file]` e.g `$ ./ark script.ark`
+3. ⌨ Have fun!
+
 #### Contributing
 If you happen to find this interesting, email me! I'd love to get people involved 🙂
