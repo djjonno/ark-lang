@@ -44,7 +44,7 @@ public class Ark {
     System.out.println();
 
     for (;;) {
-      System.out.print("> ");
+      System.out.print(")  ");
       run(reader.readLine());
 
       hadError = false;
@@ -55,7 +55,7 @@ public class Ark {
     List<Token> tokens = new Scanner(source).scanTokens();
 
     Parser parser = new Parser(tokens);
-    List<Stmt.Expression> statements = parser.parse();
+    List<Stmt> statements = parser.parse();
 
     if (hadError) return;
 

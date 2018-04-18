@@ -11,17 +11,17 @@ abstract class Expr {
     R visitVariableExpr(Variable expr);
   }
   static class Operation extends Expr {
-    Operation(Token operator, Expr expression) {
-      this.operator = operator;
-      this.expression = expression;
+    Operation(Token name, List<Expr> expressions) {
+      this.name = name;
+      this.expressions = expressions;
     }
 
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitOperationExpr(this);
     }
 
-    final Token operator;
-    final Expr expression;
+    final Token name;
+    final List<Expr> expressions;
   }
   static class Binary extends Expr {
     Binary(Token operator, Expr left, Expr right) {

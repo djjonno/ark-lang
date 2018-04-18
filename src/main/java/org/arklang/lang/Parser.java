@@ -15,14 +15,22 @@ public class Parser {
     this.tokens = tokens;
   }
 
-  List<Stmt.Expression> parse() {
-    List<Stmt.Expression> expressions = new ArrayList<>();
+  List<Stmt> parse() {
+    List<Stmt> expressions = new ArrayList<>();
 
     while (!isAtEnd()) {
-      expressions.add(new Stmt.Expression(expression()));
+      expressions.add(declaration());
     }
 
     return expressions;
+  }
+
+  private Stmt declaration() {
+    return expressionStmt();
+  }
+
+  private Stmt expressionStmt() {
+    return new Stmt.Expression(expression());
   }
 
   private Expr expression() {
@@ -31,15 +39,10 @@ public class Parser {
       consume(RIGHT_PAREN, "Expect ')' after expression.");
       return expr;
     }
-    return unary(); // unary
+    return unary();
   }
 
   private Expr binary() {
-    /*
-    "or" | "and" | "!=" | "==" | ">" | ">=" |
-    "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%"
-    ""
-     */
     while (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
@@ -48,7 +51,7 @@ public class Parser {
       Expr right = expression();
       return new Expr.Binary(operator, left, right);
     }
-    return unary();
+    return operation();
   }
 
   private Expr unary() {
@@ -59,6 +62,27 @@ public class Parser {
     }
 
     return primary();
+  }
+
+  private Expr operation() {
+    if (match(IDENTIFIER)) {
+      Token name = previous();
+      List<Expr> arguments = new ArrayList<>();
+      while (!check(RIGHT_PAREN)) {
+        arguments.add(argument());
+      }
+      return new Expr.Operation(name, arguments);
+    }
+
+    return primary();
+  }
+
+  private Expr argument() {
+    if (check(LAMBDA)) {
+      // parse lambda expr
+      // return lambda();
+    }
+    return expression();
   }
 
   private Expr primary() {
@@ -75,7 +99,6 @@ public class Parser {
     }
 
     throw error(peek(), "Expect expression.");
-
   }
 
   /*

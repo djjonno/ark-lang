@@ -77,7 +77,7 @@ public class Scanner {
       case ':': addToken(COLON); break;
       case '+': addToken(PLUS); break;
       case '-': addToken(match('>') ? RIGHT_ARROW : MINUS); break;
-      case '*': addToken(STAR); break;
+      case '*': addToken(match('*') ? STAR_STAR : STAR); break;
       case '/': addToken(SLASH); break;
       case '%': addToken(PERCENT); break;
       case '|': addToken(PIPE); break;

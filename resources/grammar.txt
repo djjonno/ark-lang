@@ -27,8 +27,8 @@ statement      → exprStmt
 exprStmt       → expression
 assignmentStmt → IDENTIFIER "=" assignmentStmt
                | expression
-ifStmt         → "if" "(" expression ")" statement ( "else" statement )?
-sendStmt     	 → "(" "send" expression ")"
+ifStmt         → "if" expression statement ( "else" statement )?
+sendStmt       → "(" "send" expression ")"
 whileStmt      → "while" "(" expression ")" statement
 block          → "{" declaration* "}"
 
@@ -43,7 +43,7 @@ operation      → ( "(" IDENTIFIER arguments* ")" ( "->" operation )* ) | logic
 logical        → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) unary )* unary
 unary          → ( "!" | "-" ) unary | primary
 primary        → "true" | "false" | "nil"
-               | INT | DOUBLE | CHAR | STRING | IDENTIFIER | LAMBDA
+               | INT | DOUBLE | CHAR | STRING | IDENTIFIER
 
 
 
@@ -51,7 +51,7 @@ primary        → "true" | "false" | "nil"
 ;;;;		UTILITIES
 
 
-lambda 	   		 → "lambda" IDENTIFIER? ( "|" parameters )? ( "->" (expression | block) )
+lambda 	   	   → "lambda" IDENTIFIER? ( "|" parameters )? ( "->" (expression | block) )
 parameters     → IDENTIFIER ( "," IDENTIFIER )*
 arguments      → (expression | lambda) ( "," ( expression | lambda ) )*
 
@@ -61,7 +61,7 @@ arguments      → (expression | lambda) ( "," ( expression | lambda ) )*
 ;;;;		LITERALS
 
 
-INT 					 → DIGIT+
+INT 		   → DIGIT+
 DOUBLE         → DIGIT+ ( "." DIGIT+ )?
 STRING         → '"' <any char except '"'>* '"'
 IDENTIFIER     → ALPHA ( ALPHA | DIGIT )*

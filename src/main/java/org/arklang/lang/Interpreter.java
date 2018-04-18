@@ -7,10 +7,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   Interpreter() {
   }
 
-  void interpret(List<Stmt.Expression> statements) {
+  void interpret(List<Stmt> statements) {
     try {
-      for (Stmt.Expression e : statements) {
-        System.out.println(evaluate(e.expression));
+      for (Stmt e : statements) {
+        System.out.println(evaluate(((Stmt.Expression) e).expression));
       }
     } catch (RuntimeError error) {
       Ark.runtimeError(error);
@@ -94,6 +94,17 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left % (int)right;
         }
+      case STAR_STAR:
+        checkNumberOperands(expr.operator, left, right);
+        if (left instanceof Integer && right instanceof Integer) {
+          return (int)Math.pow((int)left, (int)right);
+        }
+        if (left instanceof Integer && right instanceof Double) {
+          return Math.pow((int)left, (double)right);
+        }
+        if (left instanceof Double && right instanceof Integer) {
+          return Math.pow((double)left, (int)right);
+        }
       case GREATER:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -160,7 +171,6 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left == (int)right;
         }
-
       /*
       Bitwise Operations
        */
@@ -182,7 +192,6 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       case U_RIGHT_SHIFT:
         checkIntegerOperands(expr.operator, left, right);
         return (int)left >>> (int)right;
-
       /*
       Logical operations
        */
@@ -205,12 +214,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return !isTruthy(right);
       case MINUS:
         checkNumberOperand(expr.operator, right);
-        if (right instanceof Integer) {
-          return -(int)right;
-        }
-        if (right instanceof Double) {
-          return -(double)right;
-        }
+        return (right instanceof Integer) ? -(int)right : -(double)right;
       case TILDE:
         checkIntegerOperand(expr.operator, right);
         return ~(int) right;
