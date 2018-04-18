@@ -25,7 +25,7 @@ public enum TokenType {
   /*
   Keyword tokens
    */
-  LET, IF, ELSE, ARG_POS, SEND, WHILE, BREAK, TRUE, FALSE, AND, OR, NIL
+  LET, IF, ELSE, ARG_POS, SEND, WHILE, BREAK, TRUE, FALSE, AND, OR, NIL, PRINT
 
   ,
 

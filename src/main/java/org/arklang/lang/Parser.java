@@ -18,14 +18,27 @@ public class Parser {
   List<Stmt> parse() {
     List<Stmt> expressions = new ArrayList<>();
 
-    while (!isAtEnd()) {
-      expressions.add(declaration());
+    try {
+      while (!isAtEnd()) {
+        expressions.add(declaration());
+      }
+    } catch (ParseError e) {
+      return null;
     }
 
     return expressions;
   }
 
   private Stmt declaration() {
+    return statement();
+  }
+
+  private Stmt statement() {
+
+    if (match(IF)) return ifStatement();
+    if (match(PRINT)) return printStatement();
+    if (match(LEFT_BRACE)) return block();
+
     return expressionStmt();
   }
 
@@ -102,6 +115,35 @@ public class Parser {
   }
 
   /*
+  Statement Functions
+   */
+  private Stmt ifStatement() {
+    Expr condition = expression();
+    Stmt thenBranch = statement();
+    Stmt elseBranch = null;
+    if (match(ELSE)) {
+      elseBranch = statement();
+    }
+    return new Stmt.If(condition, thenBranch, elseBranch);
+  }
+
+  private Stmt printStatement() {
+    Expr expr = expression();
+    return new Stmt.Print(expr);
+  }
+
+  private Stmt block() {
+    List<Stmt> statements = new ArrayList<>();
+
+    while (!check(RIGHT_BRACE)) {
+      statements.add(declaration());
+    }
+
+    consume(RIGHT_BRACE, "Expect '}' after block.");
+    return new Stmt.Block(statements);
+  }
+
+  /*
   Helper methods for Parser.
    */
 
@@ -148,6 +190,4 @@ public class Parser {
     Ark.error(token, message);
     return new ParseError();
   }
-
-  // TODO: Add panic mode - synchronise
 }

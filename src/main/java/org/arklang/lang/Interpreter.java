@@ -10,7 +10,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   void interpret(List<Stmt> statements) {
     try {
       for (Stmt e : statements) {
-        System.out.println(evaluate(((Stmt.Expression) e).expression));
+        execute(e);
       }
     } catch (RuntimeError error) {
       Ark.runtimeError(error);
@@ -239,9 +239,35 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return null;
   }
 
+  @Override
+  public Void visitIfStmt(Stmt.If stmt) {
+    Object condition = evaluate(stmt.condition);
+    if (isTruthy(condition)) {
+      execute(stmt.thenBranch);
+    } else if (stmt.elseBranch != null) {
+      execute(stmt.elseBranch);
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitPrintStmt(Stmt.Print stmt) {
+    Object value = evaluate(stmt.expression);
+    System.out.println(value);
+    return null;
+  }
+
+  @Override
+  public Void visitBlockStmt(Stmt.Block stmt) {
+    for (Stmt statement : stmt.statements) {
+      execute(statement);
+    }
+    return null;
+  }
+
   /*
-  Interpreter helpers
-   */
+        Interpreter helpers
+         */
   private void checkNumberOperand(Token operator, Object op) {
     if (!(op instanceof Number)) {
       throw new RuntimeError(operator, "Operands must be numeric.");

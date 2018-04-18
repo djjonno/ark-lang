@@ -39,6 +39,7 @@ public class Scanner {
     keywords.put("list",    LIST);
     keywords.put("lambda",  LAMBDA);
     keywords.put("dict",    DICT);
+    keywords.put("print",   PRINT);
   }
 
   public Scanner(String inSource) {
@@ -121,7 +122,6 @@ public class Scanner {
       case ' ': case '\r': case '\t':
         break;
       case '\n':
-        addToken(NEW_LINE);
         line++;
         break;
 
@@ -208,6 +208,7 @@ public class Scanner {
       while (isDigit(peek())) advance();
     }
 
+    // TODO: test this
     if (fractional) {
       addToken(DOUBLE, Double.parseDouble(source.substring(start, current)));
     } else {
