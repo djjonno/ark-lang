@@ -10,6 +10,7 @@ abstract class Expr {
     R visitUnaryExpr(Unary expr);
     R visitLiteralExpr(Literal expr);
     R visitVariableExpr(Variable expr);
+    R visitTernaryExpr(Ternary expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -86,6 +87,21 @@ abstract class Expr {
     }
 
     final Token name;
+  }
+  static class Ternary extends Expr {
+    Ternary(Expr condition, Expr expr1, Expr expr2) {
+      this.condition = condition;
+      this.expr1 = expr1;
+      this.expr2 = expr2;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTernaryExpr(this);
+    }
+
+    final Expr condition;
+    final Expr expr1;
+    final Expr expr2;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

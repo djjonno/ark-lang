@@ -137,7 +137,7 @@ public class Parser {
 
     Expr initializer = null;
     if (match(EQUAL)) {
-      initializer = expression();
+      initializer = assignment();
     }
 
     return new Stmt.Let(name, initializer);
@@ -157,7 +157,7 @@ public class Parser {
   }
 
   private Stmt printStatement() {
-    Expr expr = expression();
+    Expr expr = assignment();
     return new Stmt.Print(expr);
   }
 

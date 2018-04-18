@@ -38,7 +38,8 @@ block          → "{" declaration* "}"
 ;;;;		EXPRESSIONS
 
 
-expression     → operation
+expression     → ternary
+ternary        → ( expression "?" expression ":" expression ) | operation
 operation      → ( "(" IDENTIFIER arguments* ")" ( "->" operation )* ) | logical
 logical        → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) unary )* unary
 unary          → ( "!" | "-" ) unary | primary
