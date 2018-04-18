@@ -13,6 +13,7 @@ public class GenerateAst {
     }
     String outputDir = args[0];
     defineAst(outputDir, "Expr", Arrays.asList(
+        "Assign   : Token name, Expr value",
         "Operation: Token name, List<Expr> expressions",
         "Binary   : Token operator, Expr left, Expr right",
         "Unary    : Token operator, Expr right",

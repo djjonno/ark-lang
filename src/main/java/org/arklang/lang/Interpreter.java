@@ -23,6 +23,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
   }
 
+  public void resolve(Expr expr, int distance) {
+    locals.put(expr, distance);
+  }
+
   private void execute(Stmt stmt) {
     stmt.accept(this);
   }
@@ -248,7 +252,21 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitVariableExpr(Expr.Variable expr) {
-    System.out.println("lookup identifier");
+    return lookUpVariable(expr.name, expr);
+  }
+
+  @Override
+  public Object visitAssignExpr(Expr.Assign expr) {
+    Object value = evaluate(expr.value);
+
+    Integer distance = locals.get(expr);
+    if (distance != null) {
+      environment.assignAt(distance, expr.name, value);
+    } else {
+      globals.assign(expr.name, value);
+    }
+
+    environment.assign(expr.name, value);
     return null;
   }
 
@@ -265,7 +283,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       value = evaluate(stmt.initializer);
     }
 
-    System.out.println(stmt.name + " " + value);
+    environment.define(stmt.name.lexeme, value);
     return null;
   }
 
@@ -325,5 +343,14 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     if (object instanceof Boolean) return (Boolean)object;
     if (object instanceof Number) return !(object).equals(0);
     return true;
+  }
+
+  private Object lookUpVariable(Token name, Expr expr) {
+    Integer distance = locals.get(expr);
+    if (distance != null) {
+      return environment.getAt(distance, name.lexeme);
+    } else {
+      return globals.get(name);
+    }
   }
 }

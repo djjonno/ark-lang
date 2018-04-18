@@ -24,7 +24,7 @@ statement      → exprStmt
                | whileStmt
                | block
 
-exprStmt       → expression
+exprStmt       → assignmentStmt
 assignmentStmt → IDENTIFIER "=" assignmentStmt
                | expression
 ifStmt         → "if" expression statement ( "else" statement )?

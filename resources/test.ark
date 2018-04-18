@@ -1,21 +1,19 @@
 
-if true print "hello" else print "goodbye"
-
-if 1 {
-  print "1 is truthy"
-
-  if (== (** 2 2) (<< 1 2)) {
-    print "4 is equal to 4!"
-  }
-
-  if 0 {
-    print "negate 0 == true"
-  }
-
-} else {
-  print "not truthy"
-}
 
 {
-  print "hey i'm in a block"
+  let a = 3
+  let outcome
+  if (> 1 3) {
+    outcome = true
+  } else {
+    outcome = false
+  }
+
+  print outcome
+
+  {
+    if (and a !outcome) {
+      print "HELLO WORLD!"
+    }
+  }
 }

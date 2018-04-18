@@ -45,7 +45,23 @@ public class Parser {
   }
 
   private Stmt expressionStmt() {
-    return new Stmt.Expression(expression());
+    return new Stmt.Expression(assignment());
+  }
+
+  private Expr assignment() {
+    Expr expr = expression();
+
+    if (match(EQUAL)) {
+      Token equals = previous();
+      Expr value = assignment();
+      if (expr instanceof Expr.Variable) {
+        return new Expr.Assign(((Expr.Variable) expr).name, value);
+      }
+
+      error(equals, "Invalid assignment target.");
+    }
+
+    return expr;
   }
 
   private Expr expression() {

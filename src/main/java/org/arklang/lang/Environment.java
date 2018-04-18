@@ -23,6 +23,17 @@ public class Environment {
     values.put(name, value);
   }
 
+  Object get(Token name) {
+    if (values.containsKey(name.lexeme)) {
+      return values.get(name.lexeme);
+    }
+
+    if (enclosing != null) return enclosing.get(name);
+
+    throw new RuntimeError(name,
+        "Undefined variable '" + name.lexeme + "'.");
+  }
+
   Object getAt(int distance, String name) {
     return ancestor(distance).values.get(name);
   }
