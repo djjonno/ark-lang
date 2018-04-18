@@ -1,25 +1,14 @@
 
+let a = 0
 
-{
-  let a = 3
-  let outcome
-  if (> 1 3) {
-    outcome = true
-  } else {
-    outcome = false
+while (< a 10) {
+  if (== (% a 2) 0) {
+    print a
   }
 
-  print outcome
+  if (== a 6) break
 
-  {
-    if (and a !outcome) {
-      print "HELLO WORLD!"
-    }
-  }
+  a = (+ a 1)
 
-  a = (** 2 (>> 1 1))
-  print a
+  ;; break
 }
-
-let a = 3
-if true ? (>= a = 4 a) : false print "hello" else print "nope"

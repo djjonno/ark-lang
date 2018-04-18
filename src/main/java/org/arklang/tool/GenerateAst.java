@@ -19,18 +19,20 @@ public class GenerateAst {
         "Unary    : Token operator, Expr right",
         "Literal  : Object value",
         "Variable : Token name",
-        "Ternary  : Expr condition, Expr expr1, Expr expr2"
+        "Ternary  : Expr condition, Expr expr1, Expr expr2",
+        "Lambda   : "
         ));
     defineAst(outputDir, "Stmt", Arrays.asList(
-            "Block      : List<Stmt> statements",
+        "Block      : List<Stmt> statements",
 //            "Class      : Token name, List<Stmt.Function> staticMethods, List<Stmt.Function> methods",
-            "Expression : Expr expression",
+        "Expression : Expr expression",
 //            "Function   : Token name, List<Token> parameters, List<Stmt> body",
-            "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
-//            "While      : Expr condition, Stmt body",
-            "Print      : Expr expression",
+        "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
+        "While      : Expr condition, Stmt body",
+        "Print      : Expr expression",
 //            "Return     : Token keyword, Expr value",
-            "Let        : Token name, Expr initializer"
+        "Let        : Token name, Expr initializer",
+        "Break      : Token keyword"
     ));
     System.out.println("Done writing to " + outputDir);
   }

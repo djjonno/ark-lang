@@ -31,6 +31,7 @@ public class Parser {
 
   private Stmt declaration() {
     if (match(LET)) return varDeclaration();
+    if (check(LEFT_PAREN) && checkNext(LAMBDA)) return lambdaDeclaration();
 
     return statement();
   }
@@ -38,7 +39,9 @@ public class Parser {
   private Stmt statement() {
 
     if (match(IF)) return ifStatement();
+    if (match(WHILE)) return whileStatement();
     if (match(PRINT)) return printStatement();
+    if (match(BREAK)) return new Stmt.Break(previous());
     if (match(LEFT_BRACE)) return block();
 
     return expressionStmt();
@@ -156,6 +159,12 @@ public class Parser {
     return new Stmt.Let(name, initializer);
   }
 
+  private Stmt lambdaDeclaration() {
+    Token name = consume(LEFT_PAREN, "Expect '(' for lambda declaration");
+
+    return null;
+  }
+
   /*
   Statement Functions
    */
@@ -167,6 +176,12 @@ public class Parser {
       elseBranch = statement();
     }
     return new Stmt.If(condition, thenBranch, elseBranch);
+  }
+
+  private Stmt whileStatement() {
+    Expr condition = assignment();
+    Stmt block = statement();
+    return new Stmt.While(condition, block);
   }
 
   private Stmt printStatement() {
@@ -197,6 +212,10 @@ public class Parser {
     return tokens.get(current);
   }
 
+  private Token peekNext() {
+    return tokens.get(current + 1);
+  }
+
   private Token previous() {
     return tokens.get(current - 1);
   }
@@ -215,6 +234,11 @@ public class Parser {
   private boolean check(TokenType tokenType) {
     if (isAtEnd()) return false;
     return peek().type == tokenType;
+  }
+
+  private boolean checkNext(TokenType tokenType) {
+    if (isAtEnd()) return false;
+    return peekNext().type == tokenType;
   }
 
   private Token advance() {

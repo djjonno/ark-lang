@@ -13,6 +13,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   private final Interpreter interpreter;
   private final Stack<HashMap<String, Boolean>> scopes = new Stack<>();
 
+  private boolean inLoop = false;
+
   public Resolver(Interpreter interpreter) {
     this.interpreter = interpreter;
   }
@@ -141,6 +143,26 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     resolve(stmt.condition);
     resolve(stmt.thenBranch);
     if (stmt.elseBranch != null) resolve(stmt.elseBranch);
+    return null;
+  }
+
+  @Override
+  public Void visitWhileStmt(Stmt.While stmt) {
+    boolean previousInLoop = inLoop;
+    inLoop = true;
+
+    resolve(stmt.condition);
+    resolve(stmt.body);
+
+    inLoop = previousInLoop;
+    return null;
+  }
+
+  @Override
+  public Void visitBreakStmt(Stmt.Break stmt) {
+    if (!inLoop) {
+      Ark.error(stmt.keyword, "Cannot use 'break' outside of loop.");
+    }
     return null;
   }
 

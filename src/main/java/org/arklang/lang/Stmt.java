@@ -7,8 +7,10 @@ abstract class Stmt {
     R visitBlockStmt(Block stmt);
     R visitExpressionStmt(Expression stmt);
     R visitIfStmt(If stmt);
+    R visitWhileStmt(While stmt);
     R visitPrintStmt(Print stmt);
     R visitLetStmt(Let stmt);
+    R visitBreakStmt(Break stmt);
   }
   static class Block extends Stmt {
     Block(List<Stmt> statements) {
@@ -47,6 +49,19 @@ abstract class Stmt {
     final Stmt thenBranch;
     final Stmt elseBranch;
   }
+  static class While extends Stmt {
+    While(Expr condition, Stmt body) {
+      this.condition = condition;
+      this.body = body;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitWhileStmt(this);
+    }
+
+    final Expr condition;
+    final Stmt body;
+  }
   static class Print extends Stmt {
     Print(Expr expression) {
       this.expression = expression;
@@ -70,6 +85,17 @@ abstract class Stmt {
 
     final Token name;
     final Expr initializer;
+  }
+  static class Break extends Stmt {
+    Break(Token keyword) {
+      this.keyword = keyword;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitBreakStmt(this);
+    }
+
+    final Token keyword;
   }
 
   abstract <R> R accept(Visitor<R> visitor);
