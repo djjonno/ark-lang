@@ -272,7 +272,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitTernaryExpr(Expr.Ternary expr) {
-    return null;
+    Object condition = evaluate(expr.condition);
+    return isTruthy(condition) ? evaluate(expr.expr1) : evaluate(expr.expr2);
   }
 
   @Override

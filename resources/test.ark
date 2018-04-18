@@ -21,3 +21,5 @@
   print a
 }
 
+let a = 3
+if true ? (>= a = 4 a) : false print "hello" else print "nope"

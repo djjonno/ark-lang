@@ -49,7 +49,7 @@ public class Parser {
   }
 
   private Expr assignment() {
-    Expr expr = expression();
+    Expr expr = ternary();
 
     if (match(EQUAL)) {
       Token equals = previous();
@@ -59,6 +59,19 @@ public class Parser {
       }
 
       error(equals, "Invalid assignment target.");
+    }
+
+    return expr;
+  }
+
+  private Expr ternary() {
+    Expr expr = expression();
+
+    if (match(QUESTION_MARK)) {
+      Expr expr1 = expression();
+      consume(COLON, "Expect ':' for ternary expression.");
+      Expr expr2 = expression();
+      return new Expr.Ternary(expr, expr1, expr2);
     }
 
     return expr;
@@ -78,8 +91,8 @@ public class Parser {
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
-      Expr left = expression();
-      Expr right = expression();
+      Expr left = assignment();
+      Expr right = assignment();
       return new Expr.Binary(operator, left, right);
     }
     return operation();
@@ -113,7 +126,7 @@ public class Parser {
       // parse lambda expr
       // return lambda();
     }
-    return expression();
+    return assignment();
   }
 
   private Expr primary() {
@@ -147,7 +160,7 @@ public class Parser {
   Statement Functions
    */
   private Stmt ifStatement() {
-    Expr condition = expression();
+    Expr condition = assignment();
     Stmt thenBranch = statement();
     Stmt elseBranch = null;
     if (match(ELSE)) {
