@@ -1,8 +1,14 @@
 package org.arklang.lang;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+
+  final Environment globals = new Environment();
+  private Environment environment = globals;
+  private final Map<Expr, Integer> locals = new HashMap<>();
 
   Interpreter() {
   }
@@ -19,6 +25,18 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   private void execute(Stmt stmt) {
     stmt.accept(this);
+  }
+
+  private void executeBlock(List<Stmt> statements, Environment environment) {
+    Environment previous = this.environment;
+    try {
+      this.environment = environment;
+      for (Stmt stmt : statements) {
+        execute(stmt);
+      }
+    } finally {
+      this.environment = previous;
+    }
   }
 
   private Object evaluate(Expr expr) {
@@ -230,12 +248,24 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitVariableExpr(Expr.Variable expr) {
+    System.out.println("lookup identifier");
     return null;
   }
 
   @Override
   public Void visitExpressionStmt(Stmt.Expression stmt) {
     evaluate(stmt.expression);
+    return null;
+  }
+
+  @Override
+  public Void visitLetStmt(Stmt.Let stmt) {
+    Object value = null;
+    if (stmt.initializer != null) {
+      value = evaluate(stmt.initializer);
+    }
+
+    System.out.println(stmt.name + " " + value);
     return null;
   }
 
@@ -259,15 +289,13 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Void visitBlockStmt(Stmt.Block stmt) {
-    for (Stmt statement : stmt.statements) {
-      execute(statement);
-    }
+    executeBlock(stmt.statements, new Environment(environment));
     return null;
   }
 
   /*
-        Interpreter helpers
-         */
+  Interpreter helpers
+  */
   private void checkNumberOperand(Token operator, Object op) {
     if (!(op instanceof Number)) {
       throw new RuntimeError(operator, "Operands must be numeric.");

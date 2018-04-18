@@ -26,9 +26,9 @@ public class GenerateAst {
 //            "Function   : Token name, List<Token> parameters, List<Stmt> body",
             "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
 //            "While      : Expr condition, Stmt body",
-            "Print      : Expr expression"
+            "Print      : Expr expression",
 //            "Return     : Token keyword, Expr value",
-//            "Var        : Token name, Expr initializer"
+            "Let        : Token name, Expr initializer"
     ));
     System.out.println("Done writing to " + outputDir);
   }

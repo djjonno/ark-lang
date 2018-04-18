@@ -30,6 +30,8 @@ public class Parser {
   }
 
   private Stmt declaration() {
+    if (match(LET)) return varDeclaration();
+
     return statement();
   }
 
@@ -112,6 +114,17 @@ public class Parser {
     }
 
     throw error(peek(), "Expect expression.");
+  }
+
+  private Stmt varDeclaration() {
+    Token name = consume(IDENTIFIER, "Expect variable name.");
+
+    Expr initializer = null;
+    if (match(EQUAL)) {
+      initializer = expression();
+    }
+
+    return new Stmt.Let(name, initializer);
   }
 
   /*

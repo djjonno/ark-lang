@@ -15,3 +15,7 @@ if 1 {
 } else {
   print "not truthy"
 }
+
+{
+  print "hey i'm in a block"
+}

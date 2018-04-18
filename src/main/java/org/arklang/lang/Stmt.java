@@ -8,6 +8,7 @@ abstract class Stmt {
     R visitExpressionStmt(Expression stmt);
     R visitIfStmt(If stmt);
     R visitPrintStmt(Print stmt);
+    R visitLetStmt(Let stmt);
   }
   static class Block extends Stmt {
     Block(List<Stmt> statements) {
@@ -56,6 +57,19 @@ abstract class Stmt {
     }
 
     final Expr expression;
+  }
+  static class Let extends Stmt {
+    Let(Token name, Expr initializer) {
+      this.name = name;
+      this.initializer = initializer;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitLetStmt(this);
+    }
+
+    final Token name;
+    final Expr initializer;
   }
 
   abstract <R> R accept(Visitor<R> visitor);
