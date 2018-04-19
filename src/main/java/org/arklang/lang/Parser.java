@@ -42,7 +42,7 @@ public class Parser {
     if (match(WHILE)) return whileStatement();
     if (match(PRINT)) return printStatement();
     if (match(BREAK)) return new Stmt.Break(previous());
-    if (match(LEFT_BRACE)) return block();
+    if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }
@@ -164,8 +164,8 @@ public class Parser {
     } else {
       // Arrow Lambdas have only a single expression which is the sent value.
       // Package the expression in a block with a send stmt.
-      Stmt.Block b = new Stmt.Block(Arrays.asList(new Stmt.Send(name, assignment())));
-      return new Expr.Lambda(null, parameters, b);
+      List<Stmt> block = Arrays.asList(new Stmt.Send(name, assignment()));
+      return new Expr.Lambda(null, parameters, block);
     }
 
   }
@@ -221,7 +221,7 @@ public class Parser {
     return new Stmt.Print(expr);
   }
 
-  private Stmt.Block block() {
+  private List<Stmt> block() {
     List<Stmt> statements = new ArrayList<>();
 
     while (!check(RIGHT_BRACE)) {
@@ -229,7 +229,7 @@ public class Parser {
     }
 
     consume(RIGHT_BRACE, "Expect '}' after block.");
-    return new Stmt.Block(statements);
+    return statements;
   }
 
   /*

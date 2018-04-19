@@ -27,7 +27,7 @@ public class Lambda implements ArkCallable {
     }
 
     try {
-      interpreter.executeBlock(declaration.body.statements, env);
+      interpreter.executeBlock(declaration.body, env);
     } catch (SendJump send) {
       return send.value;
     }

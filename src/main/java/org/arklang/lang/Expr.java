@@ -107,7 +107,7 @@ abstract class Expr {
     final Expr expr2;
   }
   static class Lambda extends Expr {
-    Lambda(Token name, List<Token> parameters, Stmt.Block body) {
+    Lambda(Token name, List<Token> parameters, List<Stmt> body) {
       this.name = name;
       this.parameters = parameters;
       this.body = body;
@@ -119,7 +119,7 @@ abstract class Expr {
 
     final Token name;
     final List<Token> parameters;
-    final Stmt.Block body;
+    final List<Stmt> body;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

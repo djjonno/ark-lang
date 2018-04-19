@@ -20,7 +20,7 @@ public class GenerateAst {
         "Literal  : Object value",
         "Variable : Token name",
         "Ternary  : Expr condition, Expr expr1, Expr expr2",
-        "Lambda   : Token name, List<Token> parameters, Stmt.Block body"
+        "Lambda   : Token name, List<Token> parameters, List<Stmt> body"
         ));
     defineAst(outputDir, "Stmt", Arrays.asList(
         "Block      : List<Stmt> statements",
