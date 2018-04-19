@@ -293,7 +293,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitLambdaExpr(Expr.Lambda expr) {
-    return new Lambda(expr, environment);
+    Lambda lambda = new Lambda(expr, environment);
+    if (expr.name != null) {
+      environment.define(expr.name.lexeme, lambda);
+    }
+    return lambda;
   }
 
   @Override

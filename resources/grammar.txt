@@ -38,12 +38,13 @@ block          → "{" declaration* "}"
 ;;;;		EXPRESSIONS
 
 
+expression     → lambdaDecl | assignment
 assignment     → ternary ( "=" assignment )?
 ternary        → expression ("?" expression ":" expression )?
-expression     → ("(" binary ")")* | unary
+grouping       → ("(" expression ")")* | binary
 binary         → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) assignment )* assignment
 operation      → ( (IDENTIFIER | "(" lambda ")" ) arguments* ")" | primary
-unary          → ( "!" | "-" ) unary | primary
+unary          → ( "!" | "-" | "~" ) unary | primary
 primary        → "true" | "false" | "nil"
                | INT | DOUBLE | CHAR | STRING | IDENTIFIER
 

@@ -37,7 +37,6 @@ public class Parser {
   }
 
   private Stmt statement() {
-
     if (match(IF)) return ifStatement();
     if (match(WHILE)) return whileStatement();
     if (match(PRINT)) return printStatement();
@@ -48,7 +47,26 @@ public class Parser {
   }
 
   private Stmt.Expression expressionStmt() {
-    return new Stmt.Expression(assignment());
+    return new Stmt.Expression(expression());
+  }
+
+  private Expr expression() {
+    // Look-ahead to lambda
+    if (check(LEFT_PAREN) && checkNext(LAMBDA)) {
+      return lambdaExpr();
+    }
+
+    return assignment();
+  }
+
+  private Expr lambdaExpr() {
+    if (match(LEFT_PAREN) && match(LAMBDA)) {
+      Expr expr = lambda();
+      consume(RIGHT_PAREN, "Expect ')' after lambda expression.");
+      return expr;
+    }
+
+    return primary();
   }
 
   private Expr assignment() {
@@ -56,7 +74,7 @@ public class Parser {
 
     if (match(EQUAL)) {
       Token equals = previous();
-      Expr value = assignment();
+      Expr value = expression();
       if (expr instanceof Expr.Variable) {
         return new Expr.Assign(((Expr.Variable) expr).name, value);
       }
@@ -68,7 +86,7 @@ public class Parser {
   }
 
   private Expr ternary() {
-    Expr expr = expression();
+    Expr expr = grouping();
 
     if (match(QUESTION_MARK)) {
       Expr expr1 = expression();
@@ -80,13 +98,13 @@ public class Parser {
     return expr;
   }
 
-  private Expr expression() {
-    while (match(LEFT_PAREN)) {
-      Expr expr = binary();
-      consume(RIGHT_PAREN, "Expect ')' after expression.");
+  private Expr grouping() {
+    if (match(LEFT_PAREN)) {
+      Expr expr = expression();
+      consume(RIGHT_PAREN, "Expect ')' after grouping.");
       return expr;
     }
-    return unary();
+    return binary();
   }
 
   private Expr binary() {
@@ -94,11 +112,11 @@ public class Parser {
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
-      Expr left = assignment();
-      Expr right = assignment();
+      Expr left = expression();
+      Expr right = expression();
       return new Expr.Binary(operator, left, right);
     }
-    return operation();
+    return unary();
   }
 
   private Expr unary() {
@@ -112,19 +130,7 @@ public class Parser {
   }
 
   private Expr operation() {
-    if (match(LEFT_PAREN) && match(LAMBDA)) {
-      Token token = previous();
-      Expr expr = lambda();
-      consume(RIGHT_PAREN, "Expect ')' after lambda declaration.");
-      return new Expr.Operation(token, expr, arguments());
-    }
-
-    if (match(IDENTIFIER)) {
-      Token token = previous();
-      return new Expr.Operation(token, new Expr.Variable(token), arguments());
-    }
-
-    return primary();
+  return null;
   }
 
   private List<Expr> arguments() {
@@ -139,7 +145,7 @@ public class Parser {
     if (match(LAMBDA)) {
        return lambda();
     }
-    return assignment();
+    return expression();
   }
 
   private Expr lambda() {
@@ -162,10 +168,10 @@ public class Parser {
     if (check(LEFT_BRACE)) {
       return new Expr.Lambda(name, parameters, block());
     } else {
-      // Arrow Lambdas have only a single expression which is the sent value.
-      // Package the expression in a block with a send stmt.
-      List<Stmt> block = Arrays.asList(new Stmt.Send(name, assignment()));
-      return new Expr.Lambda(null, parameters, block);
+      // Arrow Lambdas have only a single grouping which is the sent value.
+      // Package the grouping in a block with a send stmt.
+      List<Stmt> block = Arrays.asList(new Stmt.Send(name, expression()));
+      return new Expr.Lambda(name, parameters, block);
     }
 
   }
@@ -183,7 +189,7 @@ public class Parser {
       return new Expr.Variable(previous());
     }
 
-    throw error(peek(), "Expect expression.");
+    throw error(peek(), "Expect grouping.");
   }
 
   private Stmt varDeclaration() {
@@ -191,7 +197,7 @@ public class Parser {
 
     Expr initializer = null;
     if (match(EQUAL)) {
-      initializer = assignment();
+      initializer = expression();
     }
 
     return new Stmt.Let(name, initializer);
@@ -201,7 +207,7 @@ public class Parser {
   Statement Functions
    */
   private Stmt ifStatement() {
-    Expr condition = assignment();
+    Expr condition = expression();
     Stmt thenBranch = statement();
     Stmt elseBranch = null;
     if (match(ELSE)) {
@@ -211,13 +217,13 @@ public class Parser {
   }
 
   private Stmt whileStatement() {
-    Expr condition = assignment();
+    Expr condition = expression();
     Stmt block = statement();
     return new Stmt.While(condition, block);
   }
 
   private Stmt printStatement() {
-    Expr expr = assignment();
+    Expr expr = expression();
     return new Stmt.Print(expr);
   }
 
