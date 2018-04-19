@@ -42,6 +42,7 @@ public class Parser {
     if (match(PRINT)) return printStatement();
     if (match(SEND)) return new Stmt.Send(previous(), expression());
     if (match(BREAK)) return new Stmt.Break(previous());
+    if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }

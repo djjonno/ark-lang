@@ -1,8 +1,12 @@
 
-(lambda sum | a, b, f -> {
-  send (f a b)
+(lambda sqrt | num -> {
+  send (** num 0.5)
 })
 
-print (sum 2 3 lambda | x, y -> {
-  send (+ x y)
-})
+if (< 1 (sqrt 2)) {
+  print "hello"
+}
+
+(lambda odd | num -> (!= (% num 2) 0))
+
+print (odd 1)
