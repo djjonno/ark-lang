@@ -157,7 +157,7 @@ public class Parser {
       name = previous();
     }
 
-    consume(PIPE, "Expect '|' after lambda declaration.");
+    consume(COLON, "Expect ':' after lambda declaration.");
 
     List<Token> parameters = new ArrayList<>();
     if (!check(RIGHT_ARROW)) {
