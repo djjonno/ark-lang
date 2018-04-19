@@ -1,12 +1,17 @@
-
-(lambda sqrt | num -> {
-  send (** num 0.5)
-})
-
-if (< 1 (sqrt 2)) {
-  print "hello"
+if (== 2 2) {
+  print "2 equals 2"
 }
 
-(lambda odd | num -> (!= (% num 2) 0))
+(lambda sum | a, b -> (+ a b))
 
-print (odd 1)
+(lambda fib | n -> {
+  if (== n 0) send 0
+  if (== n 1) send 1
+  send (+ (fib (- n 2)) (fib (- n 1)))
+})
+
+print "print the 10th fib #"
+print (fib 10)
+
+
+

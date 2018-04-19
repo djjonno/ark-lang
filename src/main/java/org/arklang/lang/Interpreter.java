@@ -93,6 +93,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left + (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left + (double)right;
+        }
+        break;
       case MINUS:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -104,6 +108,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left - (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left - (double)right;
+        }
+        break;
       case STAR:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -115,6 +123,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left * (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left * (double)right;
+        }
+        break;
       case SLASH:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -126,6 +138,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left / (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left / (double)right;
+        }
+        break;
       case PERCENT:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -137,6 +153,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left % (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left % (double)right;
+        }
+        break;
       case STAR_STAR:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -148,6 +168,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return Math.pow((double)left, (int)right);
         }
+        if (left instanceof Double && right instanceof Double) {
+          return Math.pow((double)left, (double)right);
+        }
+        break;
       case GREATER:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -159,6 +183,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left > (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left > (double)right;
+        }
+        break;
       case GREATER_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -170,6 +198,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left >= (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left >= (double)right;
+        }
+        break;
       case LESS:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -181,6 +213,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left < (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left < (double)right;
+        }
+        break;
       case LESS_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -192,6 +228,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left <= (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left <= (double)right;
+        }
+        break;
       case BANG_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -203,6 +243,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left != (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left != (double)right;
+        }
+        break;
       case EQUAL_EQUAL:
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
@@ -214,6 +258,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (left instanceof Double && right instanceof Integer) {
           return (double)left == (int)right;
         }
+        if (left instanceof Double && right instanceof Double) {
+          return (double)left == (double)right;
+        }
+        break;
       /*
       Bitwise Operations
        */
