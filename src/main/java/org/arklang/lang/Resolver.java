@@ -72,8 +72,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
   @Override
   public Void visitOperationExpr(Expr.Operation expr) {
-    resolveLocal(expr, expr.name);
-    for (Expr e : expr.expressions) {
+    resolve(expr.target);
+    for (Expr e : expr.arguments) {
       resolve(e);
     }
     return null;
@@ -121,6 +121,25 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     resolve(expr.condition);
     resolve(expr.expr1);
     resolve(expr.expr2);
+    return null;
+  }
+
+  @Override
+  public Void visitLambdaExpr(Expr.Lambda expr) {
+    if (expr.name != null) {
+      declare(expr.name);
+      define(expr.name);
+    }
+
+    beginScope();
+    if (expr.parameters != null) {
+      for (Token param : expr.parameters) {
+        declare(param);
+        define(param);
+      }
+    }
+    resolve(expr.body);
+    endScope();
     return null;
   }
 
@@ -179,6 +198,12 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
       resolve(stmt.initializer);
     }
     define(stmt.name);
+    return null;
+  }
+
+  @Override
+  public Void visitSendStmt(Stmt.Send stmt) {
+    resolve(stmt.value);
     return null;
   }
 }

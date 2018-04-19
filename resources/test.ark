@@ -1,14 +1,12 @@
 
-let a = 0
+(lambda sqrt | num -> {
+  send (** num 0.5)
+})
 
-while (< a 10) {
-  if (== (% a 2) 0) {
-    print a
-  }
-
-  if (== a 6) break
-
-  a = (+ a 1)
-
-  ;; break
+if (< 1 (sqrt 2)) {
+  print "hello"
 }
+
+(lambda odd | num -> (!= (% num 2) 0))
+
+print (odd 1)

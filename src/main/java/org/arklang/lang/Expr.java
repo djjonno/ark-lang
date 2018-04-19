@@ -11,6 +11,7 @@ abstract class Expr {
     R visitLiteralExpr(Literal expr);
     R visitVariableExpr(Variable expr);
     R visitTernaryExpr(Ternary expr);
+    R visitLambdaExpr(Lambda expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -26,17 +27,19 @@ abstract class Expr {
     final Expr value;
   }
   static class Operation extends Expr {
-    Operation(Token name, List<Expr> expressions) {
-      this.name = name;
-      this.expressions = expressions;
+    Operation(Token token, Expr target, List<Expr> arguments) {
+      this.token = token;
+      this.target = target;
+      this.arguments = arguments;
     }
 
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitOperationExpr(this);
     }
 
-    final Token name;
-    final List<Expr> expressions;
+    final Token token;
+    final Expr target;
+    final List<Expr> arguments;
   }
   static class Binary extends Expr {
     Binary(Token operator, Expr left, Expr right) {
@@ -102,6 +105,21 @@ abstract class Expr {
     final Expr condition;
     final Expr expr1;
     final Expr expr2;
+  }
+  static class Lambda extends Expr {
+    Lambda(Token name, List<Token> parameters, List<Stmt> body) {
+      this.name = name;
+      this.parameters = parameters;
+      this.body = body;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitLambdaExpr(this);
+    }
+
+    final Token name;
+    final List<Token> parameters;
+    final List<Stmt> body;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

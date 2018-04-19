@@ -1,6 +1,7 @@
 package org.arklang.lang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.arklang.lang.TokenType.*;
@@ -31,24 +32,37 @@ public class Parser {
 
   private Stmt declaration() {
     if (match(LET)) return varDeclaration();
-    if (check(LEFT_PAREN) && checkNext(LAMBDA)) return lambdaDeclaration();
 
     return statement();
   }
 
   private Stmt statement() {
-
     if (match(IF)) return ifStatement();
     if (match(WHILE)) return whileStatement();
     if (match(PRINT)) return printStatement();
+    if (match(SEND)) return new Stmt.Send(previous(), expression());
     if (match(BREAK)) return new Stmt.Break(previous());
-    if (match(LEFT_BRACE)) return block();
+    if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }
 
-  private Stmt expressionStmt() {
-    return new Stmt.Expression(assignment());
+  private Stmt.Expression expressionStmt() {
+    return new Stmt.Expression(expression());
+  }
+
+  private Expr expression() {
+    return assignment();
+  }
+
+  private Expr lambdaExpr() {
+    if (match(LEFT_PAREN) && match(LAMBDA)) {
+      Expr expr = lambda();
+      consume(RIGHT_PAREN, "Expect ')' after lambda expression.");
+      return expr;
+    }
+
+    return primary();
   }
 
   private Expr assignment() {
@@ -56,7 +70,7 @@ public class Parser {
 
     if (match(EQUAL)) {
       Token equals = previous();
-      Expr value = assignment();
+      Expr value = expression();
       if (expr instanceof Expr.Variable) {
         return new Expr.Assign(((Expr.Variable) expr).name, value);
       }
@@ -68,7 +82,7 @@ public class Parser {
   }
 
   private Expr ternary() {
-    Expr expr = expression();
+    Expr expr = grouping();
 
     if (match(QUESTION_MARK)) {
       Expr expr1 = expression();
@@ -80,13 +94,13 @@ public class Parser {
     return expr;
   }
 
-  private Expr expression() {
-    while (match(LEFT_PAREN)) {
-      Expr expr = binary();
-      consume(RIGHT_PAREN, "Expect ')' after expression.");
+  private Expr grouping() {
+    if (match(LEFT_PAREN)) {
+      Expr expr = expression();
+      consume(RIGHT_PAREN, "Expect ')' after grouping.");
       return expr;
     }
-    return unary();
+    return binary();
   }
 
   private Expr binary() {
@@ -94,11 +108,11 @@ public class Parser {
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
-      Expr left = assignment();
-      Expr right = assignment();
+      Expr left = expression();
+      Expr right = expression();
       return new Expr.Binary(operator, left, right);
     }
-    return operation();
+    return unary();
   }
 
   private Expr unary() {
@@ -108,28 +122,72 @@ public class Parser {
       return new Expr.Unary(operator, right);
     }
 
-    return primary();
+    return operation();
   }
 
   private Expr operation() {
-    if (match(IDENTIFIER)) {
-      Token name = previous();
-      List<Expr> arguments = new ArrayList<>();
-      while (!check(RIGHT_PAREN)) {
-        arguments.add(argument());
+    if (match(LAMBDA)) {
+      Token token = previous();
+      Expr.Lambda expr = lambda();
+      if (!check(RIGHT_PAREN)) {
+        // this is an operation. Parse arguments.
+        return new Expr.Operation(expr.name != null ? expr.name : token, expr, arguments());
+      } else {
+        return expr;
       }
-      return new Expr.Operation(name, arguments);
     }
 
-    return primary();
+    Token prev = previous();
+    Expr expr = primary();
+    if (expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
+      return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
+    } else {
+      return expr;
+    }
+  }
+
+  private List<Expr> arguments() {
+    List<Expr> arguments = new ArrayList<>();
+    while (!check(RIGHT_PAREN)) {
+      arguments.add(argument());
+    }
+    return arguments;
   }
 
   private Expr argument() {
-    if (check(LAMBDA)) {
-      // parse lambda expr
-      // return lambda();
+    if (match(LAMBDA)) {
+       return lambda();
     }
-    return assignment();
+    return expression();
+  }
+
+  private Expr.Lambda lambda() {
+    Token name = null;
+    if (match(IDENTIFIER)) {
+      name = previous();
+    }
+
+    consume(PIPE, "Expect '|' after lambda declaration.");
+
+    List<Token> parameters = new ArrayList<>();
+    if (!check(RIGHT_ARROW)) {
+      do {
+        parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+      } while (match(COMMA));
+    }
+
+    consume(RIGHT_ARROW, "Expect '->' after lambda params.");
+
+    if (check(LEFT_BRACE)) {
+      match(LEFT_BRACE);
+      return new Expr.Lambda(name, parameters, block());
+    } else {
+      // Arrow Lambdas have only a single grouping which is the sent value.
+      // Package the grouping in a block with a send stmt.
+      List<Stmt> block = Arrays.asList(new Stmt.Send(name, expression()));
+      return new Expr.Lambda(name, parameters, block);
+    }
+
   }
 
   private Expr primary() {
@@ -153,23 +211,17 @@ public class Parser {
 
     Expr initializer = null;
     if (match(EQUAL)) {
-      initializer = assignment();
+      initializer = expression();
     }
 
     return new Stmt.Let(name, initializer);
-  }
-
-  private Stmt lambdaDeclaration() {
-    Token name = consume(LEFT_PAREN, "Expect '(' for lambda declaration");
-
-    return null;
   }
 
   /*
   Statement Functions
    */
   private Stmt ifStatement() {
-    Expr condition = assignment();
+    Expr condition = expression();
     Stmt thenBranch = statement();
     Stmt elseBranch = null;
     if (match(ELSE)) {
@@ -179,17 +231,17 @@ public class Parser {
   }
 
   private Stmt whileStatement() {
-    Expr condition = assignment();
+    Expr condition = expression();
     Stmt block = statement();
     return new Stmt.While(condition, block);
   }
 
   private Stmt printStatement() {
-    Expr expr = assignment();
+    Expr expr = expression();
     return new Stmt.Print(expr);
   }
 
-  private Stmt block() {
+  private List<Stmt> block() {
     List<Stmt> statements = new ArrayList<>();
 
     while (!check(RIGHT_BRACE)) {
@@ -197,7 +249,7 @@ public class Parser {
     }
 
     consume(RIGHT_BRACE, "Expect '}' after block.");
-    return new Stmt.Block(statements);
+    return statements;
   }
 
   /*

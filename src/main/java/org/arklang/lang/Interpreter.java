@@ -1,5 +1,6 @@
 package org.arklang.lang;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +28,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     locals.put(expr, distance);
   }
 
-  private void execute(Stmt stmt) {
+  public void execute(Stmt stmt) {
     stmt.accept(this);
   }
 
-  private void executeBlock(List<Stmt> statements, Environment environment) {
+  public void executeBlock(List<Stmt> statements, Environment environment) {
     Environment previous = this.environment;
     try {
       this.environment = environment;
@@ -49,7 +50,27 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitOperationExpr(Expr.Operation expr) {
-    return null;
+    Object target = evaluate(expr.target);
+
+    if (!(target instanceof ArkCallable)) {
+      throw new RuntimeError(expr.token, "Invalid operation target.");
+    }
+
+    List<Object> arguments = new ArrayList<>();
+    for (Expr arg : expr.arguments) {
+      arguments.add(evaluate(arg));
+    }
+
+    ArkCallable lambda = (ArkCallable) target;
+
+    if (arguments.size() != lambda.arity()) {
+      throw new RuntimeError(expr.token, "Expected " +
+          lambda.arity() +
+          " args but got " +
+          arguments.size() + ".");
+    }
+
+    return lambda.call(this, arguments);
   }
 
   @Override
@@ -271,6 +292,15 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Object visitLambdaExpr(Expr.Lambda expr) {
+    Lambda lambda = new Lambda(expr, environment);
+    if (expr.name != null) {
+      environment.define(expr.name.lexeme, lambda);
+    }
+    return lambda;
+  }
+
+  @Override
   public Object visitTernaryExpr(Expr.Ternary expr) {
     Object condition = evaluate(expr.condition);
     return isTruthy(condition) ? evaluate(expr.expr1) : evaluate(expr.expr2);
@@ -314,6 +344,12 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       }
     }
     return null;
+  }
+
+  @Override
+  public Void visitSendStmt(Stmt.Send stmt) {
+    Object value = evaluate(stmt.value);
+    throw new SendJump(value);
   }
 
   @Override
