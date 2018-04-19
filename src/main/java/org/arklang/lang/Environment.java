@@ -1,5 +1,7 @@
 package org.arklang.lang;
 
+import com.sun.tools.doclint.Env;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,8 @@ public class Environment {
   }
 
   Object getAt(int distance, String name) {
-    return ancestor(distance).values.get(name);
+    Environment anc = ancestor(distance);
+    return anc.values.get(name);
   }
 
   void assign(Token name, Object value) {

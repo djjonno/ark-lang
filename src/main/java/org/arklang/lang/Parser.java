@@ -1,6 +1,7 @@
 package org.arklang.lang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.arklang.lang.TokenType.*;
@@ -31,7 +32,6 @@ public class Parser {
 
   private Stmt declaration() {
     if (match(LET)) return varDeclaration();
-    if (check(LEFT_PAREN) && checkNext(LAMBDA)) return lambdaDeclaration();
 
     return statement();
   }
@@ -47,7 +47,7 @@ public class Parser {
     return expressionStmt();
   }
 
-  private Stmt expressionStmt() {
+  private Stmt.Expression expressionStmt() {
     return new Stmt.Expression(assignment());
   }
 
@@ -112,24 +112,62 @@ public class Parser {
   }
 
   private Expr operation() {
+    if (match(LEFT_PAREN) && match(LAMBDA)) {
+      Token token = previous();
+      Expr expr = lambda();
+      consume(RIGHT_PAREN, "Expect ')' after lambda declaration.");
+      return new Expr.Operation(token, expr, arguments());
+    }
+
     if (match(IDENTIFIER)) {
-      Token name = previous();
-      List<Expr> arguments = new ArrayList<>();
-      while (!check(RIGHT_PAREN)) {
-        arguments.add(argument());
-      }
-      return new Expr.Operation(name, arguments);
+      Token token = previous();
+      return new Expr.Operation(token, new Expr.Variable(token), arguments());
     }
 
     return primary();
   }
 
+  private List<Expr> arguments() {
+    List<Expr> arguments = new ArrayList<>();
+    while (!check(RIGHT_PAREN)) {
+      arguments.add(argument());
+    }
+    return arguments;
+  }
+
   private Expr argument() {
-    if (check(LAMBDA)) {
-      // parse lambda expr
-      // return lambda();
+    if (match(LAMBDA)) {
+       return lambda();
     }
     return assignment();
+  }
+
+  private Expr lambda() {
+    Token name = null;
+    if (match(IDENTIFIER)) {
+      name = previous();
+    }
+
+    consume(PIPE, "Expect '|' after lambda declaration.");
+
+    List<Token> parameters = new ArrayList<>();
+    if (!check(RIGHT_ARROW)) {
+      do {
+        parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+      } while (match(COMMA));
+    }
+
+    consume(RIGHT_ARROW, "Expect '->' after lambda params.");
+
+    if (check(LEFT_BRACE)) {
+      return new Expr.Lambda(name, parameters, block());
+    } else {
+      // Arrow Lambdas have only a single expression which is the sent value.
+      // Package the expression in a block with a send stmt.
+      Stmt.Block b = new Stmt.Block(Arrays.asList(new Stmt.Send(name, assignment())));
+      return new Expr.Lambda(null, parameters, b);
+    }
+
   }
 
   private Expr primary() {
@@ -159,12 +197,6 @@ public class Parser {
     return new Stmt.Let(name, initializer);
   }
 
-  private Stmt lambdaDeclaration() {
-    Token name = consume(LEFT_PAREN, "Expect '(' for lambda declaration");
-
-    return null;
-  }
-
   /*
   Statement Functions
    */
@@ -189,7 +221,7 @@ public class Parser {
     return new Stmt.Print(expr);
   }
 
-  private Stmt block() {
+  private Stmt.Block block() {
     List<Stmt> statements = new ArrayList<>();
 
     while (!check(RIGHT_BRACE)) {

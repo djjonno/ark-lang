@@ -28,7 +28,7 @@ exprStmt       → assignmentStmt
 assignmentStmt → IDENTIFIER "=" assignmentStmt
                | expression
 ifStmt         → "if" expression statement ( "else" statement )?
-sendStmt       → "(" "send" expression ")"
+sendStmt       → send" expression?
 whileStmt      → "while" "(" expression ")" statement
 block          → "{" declaration* "}"
 
@@ -38,10 +38,11 @@ block          → "{" declaration* "}"
 ;;;;		EXPRESSIONS
 
 
-expression     → ternary
-ternary        → ( expression "?" expression ":" expression ) | operation
-operation      → ( "(" IDENTIFIER arguments* ")" ( "->" operation )* ) | logical
-logical        → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) unary )* unary
+assignment     → ternary ( "=" assignment )?
+ternary        → expression ("?" expression ":" expression )?
+expression     → ("(" binary ")")* | unary
+binary         → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) assignment )* assignment
+operation      → ( (IDENTIFIER | "(" lambda ")" ) arguments* ")" | primary
 unary          → ( "!" | "-" ) unary | primary
 primary        → "true" | "false" | "nil"
                | INT | DOUBLE | CHAR | STRING | IDENTIFIER

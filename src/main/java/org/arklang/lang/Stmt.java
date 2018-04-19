@@ -9,6 +9,7 @@ abstract class Stmt {
     R visitIfStmt(If stmt);
     R visitWhileStmt(While stmt);
     R visitPrintStmt(Print stmt);
+    R visitSendStmt(Send stmt);
     R visitLetStmt(Let stmt);
     R visitBreakStmt(Break stmt);
   }
@@ -72,6 +73,19 @@ abstract class Stmt {
     }
 
     final Expr expression;
+  }
+  static class Send extends Stmt {
+    Send(Token keyword, Expr value) {
+      this.keyword = keyword;
+      this.value = value;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitSendStmt(this);
+    }
+
+    final Token keyword;
+    final Expr value;
   }
   static class Let extends Stmt {
     Let(Token name, Expr initializer) {
