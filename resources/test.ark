@@ -13,5 +13,7 @@ if (== 2 2) {
 print "print the 10th fib #"
 print (fib 10)
 
-
+let a = 1,
+  b = 10,
+  c = 10
 

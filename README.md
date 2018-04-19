@@ -157,7 +157,7 @@ from the left to the right. Rather than nesting function calls, expression are e
 #### Dev Install
 
 1. Open Ark prompt `$ ./ark`
-2. Or, execute an ark file `$ ./ark [file]` e.g `$ ./ark script.ark`
+2. Or, execute an ark file `$ ./ark [file]`
 3. ⌨ Have fun!
 
 #### Contributing
