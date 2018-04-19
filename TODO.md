@@ -6,6 +6,7 @@ let a = 1,
   b = 10, 
   c = 100
   ```
+- String interpolation and concatenation
 - ArkCollection (array) type e.g `[]`
 - ArkCollection enumerators
 ```
