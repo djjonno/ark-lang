@@ -17,3 +17,4 @@ let a = 1,
 - Change `|` to `:` in lambda declaration.
 - Module Definitions
 - Import statements to import external modules
+- Cleanup `Interpreter.visitBinary()` method - Number computation is lengthy.

@@ -31,7 +31,7 @@ public class Parser {
   }
 
   private Stmt declaration() {
-    if (match(LET)) return varDeclaration();
+    if (match(LET)) return letDeclaration();
 
     return statement();
   }
@@ -53,16 +53,6 @@ public class Parser {
 
   private Expr expression() {
     return assignment();
-  }
-
-  private Expr lambdaExpr() {
-    if (match(LEFT_PAREN) && match(LAMBDA)) {
-      Expr expr = lambda();
-      consume(RIGHT_PAREN, "Expect ')' after lambda expression.");
-      return expr;
-    }
-
-    return primary();
   }
 
   private Expr assignment() {
@@ -139,7 +129,7 @@ public class Parser {
 
     Token prev = previous();
     Expr expr = primary();
-    if (expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
+    if (prev != null && expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
       return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
     } else {
       return expr;
@@ -206,15 +196,21 @@ public class Parser {
     throw error(peek(), "Expect expression.");
   }
 
-  private Stmt varDeclaration() {
-    Token name = consume(IDENTIFIER, "Expect variable name.");
+  private Stmt letDeclaration() {
+    List<Token> names = new ArrayList<>();
+    List<Expr> initializers = new ArrayList<>();
 
-    Expr initializer = null;
-    if (match(EQUAL)) {
-      initializer = expression();
-    }
+    do {
+      Token name = consume(IDENTIFIER, "Expect variable name.");
+      Expr initializer = null;
+      if (match(EQUAL)) {
+        initializer = expression();
+      }
+      names.add(name);
+      initializers.add(initializer);
+    } while (match(COMMA));
 
-    return new Stmt.Let(name, initializer);
+    return new Stmt.Let(names, initializers);
   }
 
   /*
@@ -269,6 +265,7 @@ public class Parser {
   }
 
   private Token previous() {
+    if (current == 0) return null;
     return tokens.get(current - 1);
   }
 

@@ -193,11 +193,14 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
   @Override
   public Void visitLetStmt(Stmt.Let stmt) {
-    declare(stmt.name);
-    if (stmt.initializer != null) {
-      resolve(stmt.initializer);
+    for (int i = 0; i < stmt.names.size(); ++i) {
+      declare(stmt.names.get(i));
+      if (stmt.initializers.get(i) != null) {
+        resolve(stmt.initializers.get(i));
+      }
+      define(stmt.names.get(i));
     }
-    define(stmt.name);
+
     return null;
   }
 

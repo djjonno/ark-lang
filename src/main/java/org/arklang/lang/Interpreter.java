@@ -362,12 +362,14 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Void visitLetStmt(Stmt.Let stmt) {
-    Object value = null;
-    if (stmt.initializer != null) {
-      value = evaluate(stmt.initializer);
+    for (int i = 0; i < stmt.names.size(); ++i) {
+      Object value = null;
+      if (stmt.initializers.get(i) != null) {
+        value = evaluate(stmt.initializers.get(i));
+      }
+      environment.define(stmt.names.get(i).lexeme, value);
     }
 
-    environment.define(stmt.name.lexeme, value);
     return null;
   }
 

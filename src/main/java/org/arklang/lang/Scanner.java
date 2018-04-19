@@ -209,7 +209,6 @@ public class Scanner {
       while (isDigit(peek())) advance();
     }
 
-    // TODO: test this
     if (fractional) {
       addToken(DOUBLE, Double.parseDouble(source.substring(start, current)));
     } else {
