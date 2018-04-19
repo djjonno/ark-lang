@@ -1,7 +1,5 @@
 package org.arklang.lang;
 
-import com.sun.tools.doclint.Env;
-
 import java.util.HashMap;
 import java.util.Map;
 

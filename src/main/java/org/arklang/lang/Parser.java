@@ -40,8 +40,8 @@ public class Parser {
     if (match(IF)) return ifStatement();
     if (match(WHILE)) return whileStatement();
     if (match(PRINT)) return printStatement();
+    if (match(SEND)) return new Stmt.Send(previous(), expression());
     if (match(BREAK)) return new Stmt.Break(previous());
-    if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }
@@ -51,11 +51,6 @@ public class Parser {
   }
 
   private Expr expression() {
-    // Look-ahead to lambda
-    if (check(LEFT_PAREN) && checkNext(LAMBDA)) {
-      return lambdaExpr();
-    }
-
     return assignment();
   }
 
@@ -126,11 +121,28 @@ public class Parser {
       return new Expr.Unary(operator, right);
     }
 
-    return primary();
+    return operation();
   }
 
   private Expr operation() {
-  return null;
+    if (match(LAMBDA)) {
+      Token token = previous();
+      Expr.Lambda expr = lambda();
+      if (!check(RIGHT_PAREN)) {
+        // this is an operation. Parse arguments.
+        return new Expr.Operation(expr.name != null ? expr.name : token, expr, arguments());
+      } else {
+        return expr;
+      }
+    }
+
+    Token prev = previous();
+    Expr expr = primary();
+    if (expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
+      return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
+    } else {
+      return expr;
+    }
   }
 
   private List<Expr> arguments() {
@@ -148,7 +160,7 @@ public class Parser {
     return expression();
   }
 
-  private Expr lambda() {
+  private Expr.Lambda lambda() {
     Token name = null;
     if (match(IDENTIFIER)) {
       name = previous();
@@ -166,6 +178,7 @@ public class Parser {
     consume(RIGHT_ARROW, "Expect '->' after lambda params.");
 
     if (check(LEFT_BRACE)) {
+      match(LEFT_BRACE);
       return new Expr.Lambda(name, parameters, block());
     } else {
       // Arrow Lambdas have only a single grouping which is the sent value.
@@ -189,7 +202,7 @@ public class Parser {
       return new Expr.Variable(previous());
     }
 
-    throw error(peek(), "Expect grouping.");
+    throw error(peek(), "Expect expression.");
   }
 
   private Stmt varDeclaration() {
