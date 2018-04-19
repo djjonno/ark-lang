@@ -67,12 +67,12 @@ public class Scanner {
   private void scanToken() {
     char c = advance();
     switch (c) {
-      case '(': addToken(LEFT_PAREN); break;
-      case ')': addToken(RIGHT_PAREN); break;
-      case '{': addToken(LEFT_BRACE); break;
-      case '}': addToken(RIGHT_BRACE); break;
-      case '[': addToken(LEFT_BRACKET); break;
-      case ']': addToken(RIGHT_BRACKET); break;
+      case '(': addToken(LPAREN); break;
+      case ')': addToken(RPAREN); break;
+      case '{': addToken(LBRACE); break;
+      case '}': addToken(RBRACE); break;
+      case '[': addToken(LBRACKET); break;
+      case ']': addToken(RBRACKET); break;
       case ',': addToken(COMMA); break;
       case '.': addToken(DOT); break;
       case ':': addToken(COLON); break;

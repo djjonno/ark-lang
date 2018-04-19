@@ -42,7 +42,7 @@ public class Parser {
     if (match(PRINT)) return printStatement();
     if (match(SEND)) return new Stmt.Send(previous(), expression());
     if (match(BREAK)) return new Stmt.Break(previous());
-    if (match(LEFT_BRACE)) return new Stmt.Block(block());
+    if (match(LBRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }
@@ -85,16 +85,24 @@ public class Parser {
   }
 
   private Expr grouping() {
-    if (match(LEFT_PAREN)) {
+    if (match(LPAREN)) {
       Expr expr = expression();
-      consume(RIGHT_PAREN, "Expect ')' after grouping.");
+      consume(RPAREN, "Expect ')' after grouping.");
       return expr;
     }
-    return binary();
+
+    // Binary operations are only valid within group expressions
+    Token prev = previous();
+    if (prev != null && prev.type == LPAREN) {
+      return binary();
+    } else {
+      return unary();
+    }
   }
 
   private Expr binary() {
-    while (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
+
+    if (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
@@ -102,6 +110,7 @@ public class Parser {
       Expr right = expression();
       return new Expr.Binary(operator, left, right);
     }
+
     return unary();
   }
 
@@ -119,7 +128,7 @@ public class Parser {
     if (match(LAMBDA)) {
       Token token = previous();
       Expr.Lambda expr = lambda();
-      if (!check(RIGHT_PAREN)) {
+      if (!check(RPAREN)) {
         // this is an operation. Parse arguments.
         return new Expr.Operation(expr.name != null ? expr.name : token, expr, arguments());
       } else {
@@ -129,7 +138,7 @@ public class Parser {
 
     Token prev = previous();
     Expr expr = primary();
-    if (prev != null && expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
+    if (prev != null && expr instanceof Expr.Variable && prev.type == LPAREN) {
       return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
     } else {
       return expr;
@@ -138,7 +147,7 @@ public class Parser {
 
   private List<Expr> arguments() {
     List<Expr> arguments = new ArrayList<>();
-    while (!check(RIGHT_PAREN)) {
+    while (!check(RPAREN)) {
       arguments.add(argument());
     }
     return arguments;
@@ -168,8 +177,8 @@ public class Parser {
 
     consume(RIGHT_ARROW, "Expect '->' after lambda params.");
 
-    if (check(LEFT_BRACE)) {
-      match(LEFT_BRACE);
+    if (check(LBRACE)) {
+      match(LBRACE);
       return new Expr.Lambda(name, parameters, block());
     } else {
       // Arrow Lambdas have only a single grouping which is the sent value.
@@ -240,11 +249,11 @@ public class Parser {
   private List<Stmt> block() {
     List<Stmt> statements = new ArrayList<>();
 
-    while (!check(RIGHT_BRACE)) {
+    while (!check(RBRACE)) {
       statements.add(declaration());
     }
 
-    consume(RIGHT_BRACE, "Expect '}' after block.");
+    consume(RBRACE, "Expect '}' after block.");
     return statements;
   }
 
