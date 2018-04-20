@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
-  final Environment globals = new Environment();
+  private final Environment globals = new Environment();
   private Environment environment = globals;
   private final Map<Expr, Integer> locals = new HashMap<>();
 
@@ -64,7 +64,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     ArkCallable lambda = (ArkCallable) target;
 
-    if (arguments.size() != lambda.arity()) {
+    if (!lambda.variadic() && arguments.size() != lambda.arity()) {
       throw new RuntimeError(expr.token, "Expected " +
           lambda.arity() +
           " args but got " +
@@ -85,7 +85,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
        */
       case PLUS:
         if (left instanceof String || right instanceof String) {
-          return (String)left + (String)right;
+          return left.toString() + right.toString();
         }
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
