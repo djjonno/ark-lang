@@ -12,6 +12,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   private final Map<Expr, Integer> locals = new HashMap<>();
 
   Interpreter() {
+    NativeFunctions.define(globals);
   }
 
   void interpret(List<Stmt> statements) {
