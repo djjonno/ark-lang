@@ -194,8 +194,12 @@ public class Parser {
     if (match(TRUE)) return new Expr.Literal(true);
     if (match(NIL)) return new Expr.Literal(null);
 
-    if (match(INT, DOUBLE, STRING, CHAR)) {
+    if (match(INT, DOUBLE, CHAR)) {
       return new Expr.Literal(previous().literal);
+    }
+
+    if (match(STRING)) {
+      return string();
     }
 
     if (match(IDENTIFIER)) {
@@ -203,6 +207,15 @@ public class Parser {
     }
 
     throw error(peek(), "Expect expression.");
+  }
+
+  private Expr string() {
+    /* Inspect string for interpolation operations */
+    String literal = (String) previous().literal;
+
+    // TODO: Implement string interpolation
+
+    return new Expr.Literal(literal);
   }
 
   private Stmt letDeclaration() {
