@@ -10,7 +10,7 @@ declaration    → lambdaDecl
                | statement
 
 lambdaDecl     → "(" lambda ")"
-varDecl        → "let" IDENTIFIER ( "=" exprStmt )?
+letDecl        → "let" IDENTIFIER ( "=" exprStmt )? ( "," IDENTIFIER ( "=" exprStmt )? )*
 
 
 
@@ -39,10 +39,10 @@ block          → "{" declaration* "}"
 
 
 expression     → lambdaDecl | assignment
-assignment     → ternary ( "=" assignment )?
+assignment     → ternary ( "=" expression )?
 ternary        → expression ("?" expression ":" expression )?
 grouping       → ("(" expression ")")* | binary
-binary         → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) assignment )* assignment
+binary         → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-" | "+" | "/" | "*" | "**" | "%" ) expression )* expression
 operation      → ( (IDENTIFIER | "(" lambda ")" ) arguments* ")" | primary
 unary          → ( "!" | "-" | "~" ) unary | primary
 primary        → "true" | "false" | "nil"

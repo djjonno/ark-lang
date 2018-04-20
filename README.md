@@ -36,6 +36,17 @@ be cutting corners just for the sake of getting something to work - it will be b
 ;; this is a comment
 ```
 
+##### Variable Declaration
+```
+let a = 1
+print a ;; 1
+
+let a = 2,
+    b = (** a 2)
+print b ;; 4
+```
+
+
 ##### Numeric Operations
 ```
 ;; addition
@@ -90,7 +101,7 @@ be cutting corners just for the sake of getting something to work - it will be b
 (or (> 1 2) (!= 1 3)) ;; true 
 ```
 
-##### Collections
+##### Collections (Coming soon)
 
 Iterate over collections using `item:collection` enumerator syntax.
 
@@ -105,12 +116,12 @@ let nums = [1,2,3,4]
 ##### Lambdas
 
 ```
-(lambda sum | a:int, b:int -> (+ a b))
+(lambda sum : a, b -> (+ a b))
 (sum 4 6) ;; 10
 ```
 
 ```
-(lambda filter | c:list, f:lambda -> {
+(lambda filter : c, f -> {
   let a = []
   (i:c) {
     if (f i) {
@@ -120,11 +131,11 @@ let nums = [1,2,3,4]
   send a
 })
 ;; filter nums greater than 3
-let nums = (filter [1,2,3,4,5], lambda | x -> (<= x 3))
+let nums = (filter [1,2,3,4,5], lambda : x -> (<= x 3))
 (print nums) ;; [1,2,3]
 ```
 
-##### Sending
+##### Sending (Coming soon)
 
 This is probably my favourite feature of Ark. Using `sends` adds so much clarity. You will see below how data flows 
 from the left to the right. Rather than nesting function calls, expression are evaluated from the left to the right...
@@ -157,7 +168,7 @@ from the left to the right. Rather than nesting function calls, expression are e
 #### Dev Install
 
 1. Open Ark prompt `$ ./ark`
-2. Or, execute an ark file `$ ./ark [file]` e.g `$ ./ark script.ark`
+2. Or, execute an ark file `$ ./ark [file]`
 3. ⌨ Have fun!
 
 #### Contributing

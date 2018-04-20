@@ -88,17 +88,17 @@ abstract class Stmt {
     final Expr value;
   }
   static class Let extends Stmt {
-    Let(Token name, Expr initializer) {
-      this.name = name;
-      this.initializer = initializer;
+    Let(List<Token> names, List<Expr> initializers) {
+      this.names = names;
+      this.initializers = initializers;
     }
 
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitLetStmt(this);
     }
 
-    final Token name;
-    final Expr initializer;
+    final List<Token> names;
+    final List<Expr> initializers;
   }
   static class Break extends Stmt {
     Break(Token keyword) {

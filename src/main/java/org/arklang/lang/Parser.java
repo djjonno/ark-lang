@@ -31,7 +31,7 @@ public class Parser {
   }
 
   private Stmt declaration() {
-    if (match(LET)) return varDeclaration();
+    if (match(LET)) return letDeclaration();
 
     return statement();
   }
@@ -42,7 +42,7 @@ public class Parser {
     if (match(PRINT)) return printStatement();
     if (match(SEND)) return new Stmt.Send(previous(), expression());
     if (match(BREAK)) return new Stmt.Break(previous());
-    if (match(LEFT_BRACE)) return new Stmt.Block(block());
+    if (match(LBRACE)) return new Stmt.Block(block());
 
     return expressionStmt();
   }
@@ -53,16 +53,6 @@ public class Parser {
 
   private Expr expression() {
     return assignment();
-  }
-
-  private Expr lambdaExpr() {
-    if (match(LEFT_PAREN) && match(LAMBDA)) {
-      Expr expr = lambda();
-      consume(RIGHT_PAREN, "Expect ')' after lambda expression.");
-      return expr;
-    }
-
-    return primary();
   }
 
   private Expr assignment() {
@@ -95,16 +85,24 @@ public class Parser {
   }
 
   private Expr grouping() {
-    if (match(LEFT_PAREN)) {
+    if (match(LPAREN)) {
       Expr expr = expression();
-      consume(RIGHT_PAREN, "Expect ')' after grouping.");
+      consume(RPAREN, "Expect ')' after grouping.");
       return expr;
     }
-    return binary();
+
+    // Binary operations are only valid within group expressions
+    Token prev = previous();
+    if (prev != null && prev.type == LPAREN) {
+      return binary();
+    } else {
+      return unary();
+    }
   }
 
   private Expr binary() {
-    while (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
+
+    if (match(OR, AND, BANG_EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL,
         LESS, LESS_EQUAL, MINUS, PLUS, SLASH, STAR, STAR_STAR, PERCENT,
         AMPERSAND, CARET, LEFT_SHIFT, RIGHT_SHIFT, U_RIGHT_SHIFT, PIPE)) {
       Token operator = previous();
@@ -112,6 +110,7 @@ public class Parser {
       Expr right = expression();
       return new Expr.Binary(operator, left, right);
     }
+
     return unary();
   }
 
@@ -129,7 +128,7 @@ public class Parser {
     if (match(LAMBDA)) {
       Token token = previous();
       Expr.Lambda expr = lambda();
-      if (!check(RIGHT_PAREN)) {
+      if (!check(RPAREN)) {
         // this is an operation. Parse arguments.
         return new Expr.Operation(expr.name != null ? expr.name : token, expr, arguments());
       } else {
@@ -139,7 +138,7 @@ public class Parser {
 
     Token prev = previous();
     Expr expr = primary();
-    if (expr instanceof Expr.Variable && prev.type == LEFT_PAREN) {
+    if (prev != null && expr instanceof Expr.Variable && prev.type == LPAREN) {
       return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
     } else {
       return expr;
@@ -148,7 +147,7 @@ public class Parser {
 
   private List<Expr> arguments() {
     List<Expr> arguments = new ArrayList<>();
-    while (!check(RIGHT_PAREN)) {
+    while (!check(RPAREN)) {
       arguments.add(argument());
     }
     return arguments;
@@ -167,7 +166,7 @@ public class Parser {
       name = previous();
     }
 
-    consume(PIPE, "Expect '|' after lambda declaration.");
+    consume(COLON, "Expect ':' after lambda declaration.");
 
     List<Token> parameters = new ArrayList<>();
     if (!check(RIGHT_ARROW)) {
@@ -178,8 +177,8 @@ public class Parser {
 
     consume(RIGHT_ARROW, "Expect '->' after lambda params.");
 
-    if (check(LEFT_BRACE)) {
-      match(LEFT_BRACE);
+    if (check(LBRACE)) {
+      match(LBRACE);
       return new Expr.Lambda(name, parameters, block());
     } else {
       // Arrow Lambdas have only a single grouping which is the sent value.
@@ -206,15 +205,21 @@ public class Parser {
     throw error(peek(), "Expect expression.");
   }
 
-  private Stmt varDeclaration() {
-    Token name = consume(IDENTIFIER, "Expect variable name.");
+  private Stmt letDeclaration() {
+    List<Token> names = new ArrayList<>();
+    List<Expr> initializers = new ArrayList<>();
 
-    Expr initializer = null;
-    if (match(EQUAL)) {
-      initializer = expression();
-    }
+    do {
+      Token name = consume(IDENTIFIER, "Expect variable name.");
+      Expr initializer = null;
+      if (match(EQUAL)) {
+        initializer = expression();
+      }
+      names.add(name);
+      initializers.add(initializer);
+    } while (match(COMMA));
 
-    return new Stmt.Let(name, initializer);
+    return new Stmt.Let(names, initializers);
   }
 
   /*
@@ -244,11 +249,11 @@ public class Parser {
   private List<Stmt> block() {
     List<Stmt> statements = new ArrayList<>();
 
-    while (!check(RIGHT_BRACE)) {
+    while (!check(RBRACE)) {
       statements.add(declaration());
     }
 
-    consume(RIGHT_BRACE, "Expect '}' after block.");
+    consume(RBRACE, "Expect '}' after block.");
     return statements;
   }
 
@@ -269,6 +274,7 @@ public class Parser {
   }
 
   private Token previous() {
+    if (current == 0) return null;
     return tokens.get(current - 1);
   }
 

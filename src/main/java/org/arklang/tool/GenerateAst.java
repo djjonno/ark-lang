@@ -24,15 +24,12 @@ public class GenerateAst {
         ));
     defineAst(outputDir, "Stmt", Arrays.asList(
         "Block      : List<Stmt> statements",
-//            "Class      : Token name, List<Stmt.Function> staticMethods, List<Stmt.Function> methods",
         "Expression : Expr expression",
-//            "Function   : Token name, List<Token> parameters, List<Stmt> body",
         "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
         "While      : Expr condition, Stmt body",
         "Print      : Expr expression",
-//            "Return     : Token keyword, Expr value",
         "Send       : Token keyword, Expr value",
-        "Let        : Token name, Expr initializer",
+        "Let        : List<Token> names, List<Expr> initializers",
         "Break      : Token keyword"
     ));
     System.out.println("Done writing to " + outputDir);
