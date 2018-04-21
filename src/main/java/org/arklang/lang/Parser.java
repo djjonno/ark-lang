@@ -128,7 +128,11 @@ public class Parser {
     if (match(LAMBDA)) {
       Token token = previous();
       Expr.Lambda expr = lambda();
-      if (!check(RPAREN)) {
+      /*
+      If Lambda has no name and arguments, it should also be parsed
+      as an operation because there would be no opportunity in future to execute.
+       */
+      if ((expr.name == null && expr.parameters.size() == 0) || !check(RPAREN)) {
         // this is an operation. Parse arguments.
         return new Expr.Operation(expr.name != null ? expr.name : token, expr, arguments());
       } else {
@@ -186,7 +190,6 @@ public class Parser {
       List<Stmt> block = Arrays.asList(new Stmt.Send(name, expression()));
       return new Expr.Lambda(name, parameters, block);
     }
-
   }
 
   private Expr primary() {
