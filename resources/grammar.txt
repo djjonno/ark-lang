@@ -46,7 +46,8 @@ binary         → ( ( "or" | "and" | "!=" | "==" | ">" | ">=" | "<" | "<=" | "-
 operation      → ( (IDENTIFIER | "(" lambda ")" ) arguments* ")" | primary
 unary          → ( "!" | "-" | "~" ) unary | primary
 primary        → "true" | "false" | "nil"
-               | INT | DOUBLE | CHAR | STRING | IDENTIFIER
+               | INT | DOUBLE | CHAR | STRING | IDENTIFIER | array
+array          → "[" arguments "]"
 
 
 

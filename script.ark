@@ -1,0 +1,3 @@
+
+(lambda op : n, f -> (f n))
+(out (op 10 lambda : n -> (** n 2)))

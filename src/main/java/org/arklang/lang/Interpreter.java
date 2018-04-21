@@ -1,9 +1,7 @@
 package org.arklang.lang;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
@@ -366,6 +364,13 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   public Void visitExpressionStmt(Stmt.Expression stmt) {
     evaluate(stmt.expression);
     return null;
+  }
+
+  @Override
+  public Object visitArrayExpr(Expr.Array expr) {
+    return expr.items.stream()
+        .map(this::evaluate)
+        .collect(Collectors.toList());
   }
 
   @Override

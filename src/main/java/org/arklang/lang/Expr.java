@@ -12,6 +12,7 @@ abstract class Expr {
     R visitVariableExpr(Variable expr);
     R visitTernaryExpr(Ternary expr);
     R visitLambdaExpr(Lambda expr);
+    R visitArrayExpr(Array expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -120,6 +121,19 @@ abstract class Expr {
     final Token name;
     final List<Token> parameters;
     final List<Stmt> body;
+  }
+  static class Array extends Expr {
+    Array(Token bracket, List<Expr> items) {
+      this.bracket = bracket;
+      this.items = items;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitArrayExpr(this);
+    }
+
+    final Token bracket;
+    final List<Expr> items;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

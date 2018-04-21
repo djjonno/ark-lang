@@ -209,7 +209,24 @@ public class Parser {
       return new Expr.Variable(previous());
     }
 
+    if (match(LBRACKET)) {
+      return array();
+    }
+
     throw error(peek(), "Expect expression.");
+  }
+
+  private Expr array() {
+    Token bracket = previous();
+
+    List<Expr> items = new ArrayList<>();
+    while (!match(RBRACKET)) {
+      do {
+        items.add(expression());
+      } while (match(COMMA));
+    }
+
+    return new Expr.Array(bracket, items);
   }
 
   private Expr string() {
