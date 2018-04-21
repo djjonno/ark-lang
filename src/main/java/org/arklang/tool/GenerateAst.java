@@ -21,7 +21,9 @@ public class GenerateAst {
         "Variable : Token name",
         "Ternary  : Expr condition, Expr expr1, Expr expr2",
         "Lambda   : Token name, List<Token> parameters, List<Stmt> body",
-        "Array    : Token bracket, List<Expr> items"
+        "Array    : Token bracket, List<Expr> items",
+        "IndexGet : Expr indexee, Token token, Expr index",
+        "IndexSet : Expr indexee, Token token, Expr index, Expr value"
         ));
     defineAst(outputDir, "Stmt", Arrays.asList(
         "Block      : List<Stmt> statements",

@@ -13,6 +13,8 @@ abstract class Expr {
     R visitTernaryExpr(Ternary expr);
     R visitLambdaExpr(Lambda expr);
     R visitArrayExpr(Array expr);
+    R visitIndexGetExpr(IndexGet expr);
+    R visitIndexSetExpr(IndexSet expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -134,6 +136,38 @@ abstract class Expr {
 
     final Token bracket;
     final List<Expr> items;
+  }
+  static class IndexGet extends Expr {
+    IndexGet(Expr indexee, Token token, Expr index) {
+      this.indexee = indexee;
+      this.token = token;
+      this.index = index;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitIndexGetExpr(this);
+    }
+
+    final Expr indexee;
+    final Token token;
+    final Expr index;
+  }
+  static class IndexSet extends Expr {
+    IndexSet(Expr indexee, Token token, Expr index, Expr value) {
+      this.indexee = indexee;
+      this.token = token;
+      this.index = index;
+      this.value = value;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitIndexSetExpr(this);
+    }
+
+    final Expr indexee;
+    final Token token;
+    final Expr index;
+    final Expr value;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

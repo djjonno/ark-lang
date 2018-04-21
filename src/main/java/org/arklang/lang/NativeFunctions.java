@@ -7,6 +7,7 @@ public class NativeFunctions {
     env.define("out", out);
     env.define("random", random);
     env.define("stime", stime);
+    env.define("len", len);
   }
 
   /**
@@ -25,7 +26,10 @@ public class NativeFunctions {
 
     @Override
     public Object call(Interpreter interpreter, List<Object> arguments) {
-      for (Object o : arguments) System.out.print(o.toString());
+      arguments.stream().map(Object::toString);
+      for (Object obj : arguments) {
+        if (obj != null) System.out.print(obj.toString() + " ");
+      }
       System.out.println();
       return null;
     }
@@ -58,6 +62,23 @@ public class NativeFunctions {
     @Override
     public Object call(Interpreter interpreter, List<Object> arguments) {
       return (double)System.currentTimeMillis() / 1000.0;
+    }
+  };
+
+  private final static ArkCallable len = new ArkCallable() {
+    @Override
+    public int arity() {
+      return 1;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> arguments) {
+      Object item = arguments.get(0);
+      if (item instanceof ArkIndexable) {
+        return ((ArkIndexable) item).length();
+      }
+
+      return null;
     }
   };
 }

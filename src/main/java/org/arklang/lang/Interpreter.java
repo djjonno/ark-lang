@@ -368,9 +368,36 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
   @Override
   public Object visitArrayExpr(Expr.Array expr) {
-    return expr.items.stream()
+    return new ArkArray(expr.items.stream()
         .map(this::evaluate)
-        .collect(Collectors.toList());
+        .collect(Collectors.toList()));
+  }
+
+  @Override
+  public Object visitIndexGetExpr(Expr.IndexGet expr) {
+    Object indexee = evaluate(expr.indexee);
+
+    if (!(indexee instanceof ArkIndexable)) {
+      Ark.error(expr.token, "Can only index collection types.");
+    } else {
+      return ((ArkIndexable) indexee).get(expr.token, evaluate(expr.index));
+    }
+
+    return null;
+  }
+
+  @Override
+  public Object visitIndexSetExpr(Expr.IndexSet expr) {
+    Object indexee = evaluate(expr.indexee);
+
+    if (!(indexee instanceof ArkIndexable)) {
+      Ark.error(expr.token, "Can only index collection types.");
+    } else {
+      return ((ArkIndexable) indexee).set(expr.token,
+          evaluate(expr.index), evaluate(expr.value));
+    }
+
+    return null;
   }
 
   @Override

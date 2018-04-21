@@ -152,6 +152,21 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Void visitIndexGetExpr(Expr.IndexGet expr) {
+    resolve(expr.indexee);
+    resolve(expr.index);
+    return null;
+  }
+
+  @Override
+  public Void visitIndexSetExpr(Expr.IndexSet expr) {
+    resolve(expr.indexee);
+    resolve(expr.index);
+    resolve(expr.value);
+    return null;
+  }
+
+  @Override
   public Void visitBlockStmt(Stmt.Block stmt) {
     beginScope();
     resolve(stmt.statements);

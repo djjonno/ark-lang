@@ -63,6 +63,9 @@ public class Parser {
       Expr value = expression();
       if (expr instanceof Expr.Variable) {
         return new Expr.Assign(((Expr.Variable) expr).name, value);
+      } else if (expr instanceof Expr.IndexGet) {
+        Expr.IndexGet get = (Expr.IndexGet) expr;
+        return new Expr.IndexSet(get.indexee, get.token, get.index, value);
       }
 
       error(equals, "Invalid assignment target.");
@@ -144,9 +147,11 @@ public class Parser {
     Expr expr = primary();
     if (prev != null && expr instanceof Expr.Variable && prev.type == LPAREN) {
       return new Expr.Operation(((Expr.Variable) expr).name, expr, arguments());
-    } else {
-      return expr;
+    } else if (match(LBRACKET)) {
+      expr = new Expr.IndexGet(expr, previous(), expression());
+      consume(RBRACKET, "Expect ']' after indexing operation.");
     }
+    return expr;
   }
 
   private List<Expr> arguments() {
@@ -173,10 +178,10 @@ public class Parser {
     consume(COLON, "Expect ':' after lambda declaration.");
 
     List<Token> parameters = new ArrayList<>();
-    if (!check(RIGHT_ARROW)) {
+    if (check(IDENTIFIER)) {
       do {
         parameters.add(consume(IDENTIFIER, "Expect parameter name."));
-      } while (match(COMMA));
+      } while (!check(RIGHT_ARROW));
     }
 
     consume(RIGHT_ARROW, "Expect '->' after lambda params.");
