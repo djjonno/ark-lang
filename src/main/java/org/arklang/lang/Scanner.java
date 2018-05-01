@@ -128,6 +128,7 @@ public class Scanner {
         line++;
         break;
 
+      case '\'': character(); break;
       case '"': string(); break;
 
       default:
@@ -188,6 +189,23 @@ public class Scanner {
 
     String value = source.substring(start + 1, current - 1);
     addToken(STRING, value);
+  }
+
+  private void character() {
+    while (peek() != '\'' && !isAtEnd()) advance();
+    int len = current - start;
+    if (len == 1) {
+      Ark.error(line, "Character cannot be empty.");
+      return;
+    } else if (len > 2) {
+      Ark.error(line, "Character length too long");
+      return;
+    }
+
+    // the closing '.
+    advance();
+    Character ch = source.substring(start + 1, current - 1).toCharArray()[0];
+    addToken(CHAR, ch);
   }
 
   private void period() {

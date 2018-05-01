@@ -13,6 +13,7 @@ abstract class Expr {
     R visitTernaryExpr(Ternary expr);
     R visitLambdaExpr(Lambda expr);
     R visitArrayExpr(Array expr);
+    R visitStrExpr(Str expr);
     R visitIndexGetExpr(IndexGet expr);
     R visitIndexSetExpr(IndexSet expr);
     R visitRangeExpr(Range expr);
@@ -137,6 +138,19 @@ abstract class Expr {
 
     final Token bracket;
     final List<Expr> items;
+  }
+  static class Str extends Expr {
+    Str(Token token, String str) {
+      this.token = token;
+      this.str = str;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitStrExpr(this);
+    }
+
+    final Token token;
+    final String str;
   }
   static class IndexGet extends Expr {
     IndexGet(Expr indexee, Token token, Expr index) {

@@ -152,6 +152,11 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Void visitStrExpr(Expr.Str expr) {
+    return null;
+  }
+
+  @Override
   public Void visitIndexGetExpr(Expr.IndexGet expr) {
     resolve(expr.indexee);
     resolve(expr.index);

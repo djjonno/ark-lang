@@ -53,6 +53,8 @@ let a = "G'day world"
 (out a) ;; G'day world
 ```
 
+Strings are enumerable and can be used in a `for-in` enumerator expr.
+
 ##### Array
 
 ```
@@ -60,7 +62,7 @@ let a = [1,2,3,4]
 (out (len a)) ;; 4
 ```
 
-Arrays are enumerable and can be used in a `for-in` enumerator.
+Arrays are enumerable and can be used in a `for-in` enumerator expr.
 
 ##### Numeric Operations
 ```

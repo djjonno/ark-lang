@@ -374,6 +374,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Object visitStrExpr(Expr.Str expr) {
+    return new ArkString(expr.str);
+  }
+
+  @Override
   public Object visitIndexGetExpr(Expr.IndexGet expr) {
     Object indexee = evaluate(expr.indexee);
 
@@ -468,7 +473,6 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       return null;
     }
 
-
     Integer index = 0;
 
     for (Object o : (ArkEnumerable)enumerable) {
@@ -479,7 +483,6 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
       execute(stmt.body);
     }
-
 
     return null;
   }

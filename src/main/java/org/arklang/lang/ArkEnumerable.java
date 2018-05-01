@@ -1,5 +1,5 @@
 package org.arklang.lang;
 
-public interface ArkEnumerable extends Iterable<Object> {
+public interface ArkEnumerable<T> extends Iterable<T> {
 
 }

@@ -1,7 +1,5 @@
 package org.arklang.lang;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -251,11 +249,10 @@ public class Parser {
 
   private Expr string() {
     /* Inspect string for interpolation operations */
-    String literal = (String) previous().literal;
 
     // TODO: Implement string interpolation
 
-    return new Expr.Literal(literal);
+    return new Expr.Str(previous(), (String)previous().literal);
   }
 
   private Stmt letDeclaration() {

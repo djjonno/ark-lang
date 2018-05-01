@@ -4,3 +4,7 @@ let a = ["hello", "world", "how", "are", "you"]
 for i in 0..(len a) {
   (out a[i])
 }
+
+for s, i in "hello" {
+  (out s i)
+}

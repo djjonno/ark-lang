@@ -6,7 +6,7 @@ import java.util.List;
 public class ArkArray implements ArkIndexable, ArkEnumerable {
   private final List<Object> items;
 
-  public ArkArray(List<Object> items) {
+  ArkArray(List<Object> items) {
     this.items = items;
   }
 
