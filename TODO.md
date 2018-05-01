@@ -10,7 +10,7 @@ let a = 1,
 - ArkCollection (array) type e.g `[]`
 - ArkCollection enumerators
 ```
-(x, i: [1, 2, 3]) {
+for x in arr {
   print x ;; 1, 2, 3 (item)
   print i ;; 0, 1, 2 (index)
 } 

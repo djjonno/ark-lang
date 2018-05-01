@@ -23,13 +23,15 @@ public class GenerateAst {
         "Lambda   : Token name, List<Token> parameters, List<Stmt> body",
         "Array    : Token bracket, List<Expr> items",
         "IndexGet : Expr indexee, Token token, Expr index",
-        "IndexSet : Expr indexee, Token token, Expr index, Expr value"
+        "IndexSet : Expr indexee, Token token, Expr index, Expr value",
+        "Range    : Expr lower, Expr upper, Token token, boolean closed"
         ));
     defineAst(outputDir, "Stmt", Arrays.asList(
         "Block      : List<Stmt> statements",
         "Expression : Expr expression",
         "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
         "While      : Expr condition, Stmt body",
+        "ForIn      : Token token, Token itemIterator, Token indexIterator, Expr enumerable, Stmt body",
         "Print      : Expr expression",
         "Send       : Token keyword, Expr value",
         "Let        : List<Token> names, List<Expr> initializers",

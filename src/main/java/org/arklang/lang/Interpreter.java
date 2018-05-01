@@ -401,6 +401,29 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Object visitRangeExpr(Expr.Range expr) {
+    try {
+      Integer lower = (Integer)evaluate(expr.lower);
+      Integer upper = (Integer)evaluate(expr.upper);
+
+      ArrayList<Object> range = new ArrayList<>();
+      for (int i = lower; i < upper; ++i) {
+        range.add(i);
+      }
+
+      if (expr.closed) {
+        range.add(upper);
+      }
+
+      return new ArkArray(range);
+    } catch (ClassCastException e) {
+      Ark.error(expr.token,
+          "Lower & Upper bounds of range expression must be integers.");
+      return null;
+    }
+  }
+
+  @Override
   public Void visitLetStmt(Stmt.Let stmt) {
     for (int i = 0; i < stmt.names.size(); ++i) {
       Object value = null;
@@ -433,6 +456,31 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         break;
       }
     }
+    return null;
+  }
+
+  @Override
+  public Void visitForInStmt(Stmt.ForIn stmt) {
+
+    Object enumerable = evaluate(stmt.enumerable);
+    if (!(enumerable instanceof ArkEnumerable)) {
+      Ark.error(stmt.token, "for stmt target must be enumerable.");
+      return null;
+    }
+
+
+    Integer index = 0;
+
+    for (Object o : (ArkEnumerable)enumerable) {
+      environment.define(stmt.itemIterator.lexeme, o);
+      if (stmt.indexIterator != null) {
+        environment.define(stmt.indexIterator.lexeme, index++);
+      }
+
+      execute(stmt.body);
+    }
+
+
     return null;
   }
 

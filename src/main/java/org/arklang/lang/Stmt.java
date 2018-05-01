@@ -8,6 +8,7 @@ abstract class Stmt {
     R visitExpressionStmt(Expression stmt);
     R visitIfStmt(If stmt);
     R visitWhileStmt(While stmt);
+    R visitForInStmt(ForIn stmt);
     R visitPrintStmt(Print stmt);
     R visitSendStmt(Send stmt);
     R visitLetStmt(Let stmt);
@@ -61,6 +62,25 @@ abstract class Stmt {
     }
 
     final Expr condition;
+    final Stmt body;
+  }
+  static class ForIn extends Stmt {
+    ForIn(Token token, Token itemIterator, Token indexIterator, Expr enumerable, Stmt body) {
+      this.token = token;
+      this.itemIterator = itemIterator;
+      this.indexIterator = indexIterator;
+      this.enumerable = enumerable;
+      this.body = body;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitForInStmt(this);
+    }
+
+    final Token token;
+    final Token itemIterator;
+    final Token indexIterator;
+    final Expr enumerable;
     final Stmt body;
   }
   static class Print extends Stmt {

@@ -1,8 +1,9 @@
 package org.arklang.lang;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class ArkArray implements ArkIndexable {
+public class ArkArray implements ArkIndexable, ArkEnumerable {
   private final List<Object> items;
 
   public ArkArray(List<Object> items) {
@@ -37,4 +38,10 @@ public class ArkArray implements ArkIndexable {
   public String toString() {
     return items.toString();
   }
+
+  @Override
+  public Iterator<Object> iterator() {
+    return items.iterator();
+  }
+
 }

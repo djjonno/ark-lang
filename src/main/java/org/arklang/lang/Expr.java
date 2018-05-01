@@ -15,6 +15,7 @@ abstract class Expr {
     R visitArrayExpr(Array expr);
     R visitIndexGetExpr(IndexGet expr);
     R visitIndexSetExpr(IndexSet expr);
+    R visitRangeExpr(Range expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -168,6 +169,23 @@ abstract class Expr {
     final Token token;
     final Expr index;
     final Expr value;
+  }
+  static class Range extends Expr {
+    Range(Expr lower, Expr upper, Token token, boolean closed) {
+      this.lower = lower;
+      this.upper = upper;
+      this.token = token;
+      this.closed = closed;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitRangeExpr(this);
+    }
+
+    final Expr lower;
+    final Expr upper;
+    final Token token;
+    final boolean closed;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

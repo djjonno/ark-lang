@@ -1,18 +1,6 @@
 
+let a = ["hello", "world", "how", "are", "you"]
 
-(lambda op : c f -> {
-
-  let idx = 0
-  while (< idx (len c)) {
-  	c[idx] = (f c[idx])
-  	idx = (+ idx 1)
-  }
-
-  send c
-
-})
-
-(out (op [1,2,3,4] lambda : c -> {
-	(out c)
-	send (** c 3)
-	}))
+for i in 0..(len a) {
+  (out a[i])
+}

@@ -8,7 +8,9 @@ public enum TokenType {
   LPAREN, RPAREN,
   LBRACE, RBRACE,
   LBRACKET, RBRACKET,
-  COLON, PIPE, COMMA, DOT, QUESTION_MARK
+  COLON, PIPE, COMMA,
+  DOT, DOT_DOT, DOT_DOT_DOT,
+  QUESTION_MARK
 
   ,
 
@@ -25,7 +27,8 @@ public enum TokenType {
   /*
   Keyword tokens
    */
-  LET, IF, ELSE, ARG_POS, SEND, WHILE, BREAK, TRUE, FALSE, AND, OR, NIL, PRINT
+  LET, IF, ELSE, ARG_POS, SEND, WHILE, BREAK,
+  TRUE, FALSE, AND, OR, NIL, PRINT, FOR, IN
 
   ,
 

@@ -46,6 +46,21 @@ let a = 2,
 print b ;; 4
 ```
 
+##### Strings
+
+```
+let a = "G'day world"
+(out a) ;; G'day world
+```
+
+##### Array
+
+```
+let a = [1,2,3,4]
+(out (len a)) ;; 4
+```
+
+Arrays are enumerable and can be used in a `for-in` enumerator.
 
 ##### Numeric Operations
 ```
@@ -134,6 +149,43 @@ let nums = [1,2,3,4]
 let nums = (filter [1,2,3,4,5], lambda : x -> (<= x 3))
 (print nums) ;; [1,2,3]
 ```
+
+##### Range Expressions
+
+Shorthand syntax to generate a range from a lower to an upper bound.
+```
+1..5 ;; [1,2,3,4]
+1...5 ;; [1,2,3,4,5]
+```
+
+A range expression resolves to an Array.
+
+##### For-In Enumerable Iteration
+
+```
+for x in 1...5 {
+  (out x)
+}
+;; 1
+;; 2
+;; 3
+;; 4
+;; 5
+```
+
+With index identifier:
+
+```
+for x, i in 1...5 {
+  (out x i)
+}
+;; 1 0
+;; 2 1
+;; 3 2
+;; 4 3
+;; 5 4
+```
+
 
 ##### Sending (Coming soon)
 

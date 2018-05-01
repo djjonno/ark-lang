@@ -23,6 +23,8 @@ public class Scanner {
     keywords.put("else",    ELSE);
     keywords.put("and",     AND);
     keywords.put("or",      OR);
+    keywords.put("for",     FOR);
+    keywords.put("in",      IN);
     keywords.put("@",       ARG_POS);
     keywords.put("send",    SEND);
     keywords.put("while",   WHILE);
@@ -74,7 +76,7 @@ public class Scanner {
       case '[': addToken(LBRACKET); break;
       case ']': addToken(RBRACKET); break;
       case ',': addToken(COMMA); break;
-      case '.': addToken(DOT); break;
+      case '.': period(); break;
       case ':': addToken(COLON); break;
       case '?': addToken(QUESTION_MARK); break;
       case '+': addToken(PLUS); break;
@@ -186,6 +188,20 @@ public class Scanner {
 
     String value = source.substring(start + 1, current - 1);
     addToken(STRING, value);
+  }
+
+  private void period() {
+    // matching double ellipsis '..'
+    if (match('.')) {
+      // matching triple ellipsis '...'
+      if (match('.')) {
+        addToken(DOT_DOT_DOT);
+      } else {
+        addToken(DOT_DOT);
+      }
+    } else {
+      addToken(DOT);
+    }
   }
 
   private boolean isDigit(char c) {

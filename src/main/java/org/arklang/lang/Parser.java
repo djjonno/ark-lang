@@ -1,5 +1,7 @@
 package org.arklang.lang;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,7 @@ public class Parser {
 
   private Stmt declaration() {
     if (match(LET)) return letDeclaration();
+    if (match(FOR)) return forDeclaration();
 
     return statement();
   }
@@ -202,7 +205,19 @@ public class Parser {
     if (match(TRUE)) return new Expr.Literal(true);
     if (match(NIL)) return new Expr.Literal(null);
 
-    if (match(INT, DOUBLE, CHAR)) {
+    if (match(INT)) {
+      // Check for range operator
+      Expr value = new Expr.Literal(previous().literal);
+      if (match(DOT_DOT, DOT_DOT_DOT)) {
+        boolean closed = previous().type == DOT_DOT_DOT;
+        return new Expr.Range(value, expression(), previous(),
+            closed);
+      } else {
+        return value;
+      }
+    }
+
+    if (match(DOUBLE, CHAR)) {
       return new Expr.Literal(previous().literal);
     }
 
@@ -258,6 +273,27 @@ public class Parser {
     } while (match(COMMA));
 
     return new Stmt.Let(names, initializers);
+  }
+
+  private Stmt forDeclaration() {
+    Token token = previous();
+
+    consume(IDENTIFIER, "Expect iterator after 'for' declaration.");
+    Token itemIterator = previous(),
+        indexIterator = null;
+
+    if (check(COMMA)) {
+      match(COMMA);
+      consume(IDENTIFIER, "Expect index iterator in 'for' declaration.");
+      indexIterator = previous();
+    }
+
+    consume(IN, "Expect 'in' after index declaration.");
+
+    Expr enumerator = expression();
+    Stmt body = statement();
+    Stmt.ForIn forIn = new Stmt.ForIn(token, itemIterator, indexIterator, enumerator, body);
+    return new Stmt.Block(new ArrayList<Stmt>() {{ add(forIn); }});
   }
 
   /*
