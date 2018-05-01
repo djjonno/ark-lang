@@ -28,7 +28,7 @@ public class Ark {
 
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
-    run(new String(bytes, Charset.defaultCharset()));
+    run(new String(bytes, Charset.defaultCharset()), false);
 
     if (hadError) System.exit(65);
     if (hadRuntimeError) System.exit(70);
@@ -45,13 +45,13 @@ public class Ark {
 
     for (;;) {
       System.out.print("\033[0;1m>\033[0m  ");
-      run(reader.readLine());
+      run(reader.readLine(), true);
 
       hadError = false;
     }
   }
 
-  private static void run(String source) {
+  private static void run(String source, boolean promptMode) {
     List<Token> tokens = new Scanner(source).scanTokens();
 
     Parser parser = new Parser(tokens);
@@ -62,7 +62,7 @@ public class Ark {
     resolver.resolve(statements);
     if (hadError) return;
 
-    interpreter.interpret(statements);
+    interpreter.interpret(statements, promptMode);
   }
 
   static void error(int line, String message) {

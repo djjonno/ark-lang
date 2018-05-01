@@ -8,15 +8,21 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   private final Environment globals = new Environment();
   private Environment environment = globals;
   private final Map<Expr, Integer> locals = new HashMap<>();
+  private boolean promptMode = false;
 
   Interpreter() {
     NativeFunctions.define(globals);
   }
 
-  void interpret(List<Stmt> statements) {
+  void interpret(List<Stmt> statements, boolean prompt) {
+    promptMode = prompt;
     try {
-      for (Stmt e : statements) {
-        execute(e);
+      for (Stmt stmt : statements) {
+        if (promptMode && stmt instanceof Stmt.Expression) {
+          System.out.println(evaluate(((Stmt.Expression) stmt).expression));
+        } else {
+          execute(stmt);
+        }
       }
     } catch (RuntimeError error) {
       Ark.runtimeError(error);
