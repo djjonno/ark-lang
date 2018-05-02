@@ -118,18 +118,6 @@ Arrays are enumerable and can be used in a `for-in` enumerator expr.
 (or (> 1 2) (!= 1 3)) ;; true 
 ```
 
-##### Collections (Coming soon)
-
-Iterate over collections using `item:collection` enumerator syntax.
-
-```
-let nums = [1,2,3,4]
-(n:nums) {
-  // code here ...
-  (print n)
-}
-```
-
 ##### Lambdas
 
 ```

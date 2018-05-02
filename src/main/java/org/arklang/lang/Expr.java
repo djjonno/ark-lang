@@ -14,6 +14,7 @@ abstract class Expr {
     R visitLambdaExpr(Lambda expr);
     R visitArrayExpr(Array expr);
     R visitStrExpr(Str expr);
+    R visitCharExpr(Char expr);
     R visitIndexGetExpr(IndexGet expr);
     R visitIndexSetExpr(IndexSet expr);
     R visitRangeExpr(Range expr);
@@ -151,6 +152,19 @@ abstract class Expr {
 
     final Token token;
     final String str;
+  }
+  static class Char extends Expr {
+    Char(Token token, Character c) {
+      this.token = token;
+      this.c = c;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitCharExpr(this);
+    }
+
+    final Token token;
+    final Character c;
   }
   static class IndexGet extends Expr {
     IndexGet(Expr indexee, Token token, Expr index) {

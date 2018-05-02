@@ -23,6 +23,7 @@ public class GenerateAst {
         "Lambda   : Token name, List<Token> parameters, List<Stmt> body",
         "Array    : Token bracket, List<Expr> items",
         "Str      : Token token, String str",
+        "Char     : Token token, Character c",
         "IndexGet : Expr indexee, Token token, Expr index",
         "IndexSet : Expr indexee, Token token, Expr index, Expr value",
         "Range    : Expr lower, Expr upper, Token token, boolean closed"

@@ -157,6 +157,11 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Void visitCharExpr(Expr.Char expr) {
+    return null;
+  }
+
+  @Override
   public Void visitIndexGetExpr(Expr.IndexGet expr) {
     resolve(expr.indexee);
     resolve(expr.index);
@@ -214,6 +219,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
   @Override
   public Void visitForInStmt(Stmt.ForIn stmt) {
+    boolean previousInLoop = inLoop;
+
     declare(stmt.itemIterator);
     define(stmt.itemIterator);
 
@@ -223,8 +230,11 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     resolve(stmt.enumerable);
+    inLoop = true;
+
     resolve(stmt.body);
 
+    inLoop = previousInLoop;
     return null;
   }
 

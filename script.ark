@@ -1,10 +1,74 @@
 
-let a = ["hello", "world", "how", "are", "you"]
+;; Reverse string
+(lambda reverse : str -> {
+	for x, i in str {
+		if (<= i (/ (len str) 2)) {
+			let t = str[i]
+			str[i] = str[(- (- (len str) 1) i)]
+			str[(- (- (len str) 1) i)] = t
+		} else {
+			break
+		}
+	}
+	send str
+})
 
-for i in 0..(len a) {
-  (out a[i])
+;; Power functions
+(lambda sqrt : a -> (** a 0.5))
+(out (reverse "hello"))
+(out 1...5)
+
+let a = 2,
+	b = (sqrt a),
+	c = (** b 2)
+
+(out a b c)
+
+for c in "hello world" {
+	if (!= c ' ') {
+		(out c)
+	}
 }
 
-for s, i in "hello" {
-  (out s i)
-}
+;; Curry function
+(lambda counter : from -> {
+	(lambda generator : -> {
+		from = (+ from 1)
+		send (- from 1)
+		})
+	send generator
+})
+
+let gen = (counter 10)
+(out (gen)) ;; 10
+(out (gen)) ;; 11
+(out (gen)) ;; 12
+(out (gen)) ;; 13
+
+(lambda filter : col f -> {
+	let a = []
+	for i in col {
+		if (f i) {
+			(out "hello")
+			(add a i)
+		}
+	}
+	send a
+	})
+
+(lambda map : col f a -> {
+	for x, i in col {
+		col[i] = (f col[i] a)
+	}
+	send col
+	})
+
+(lambda pow : n exp -> (** n exp))
+
+(out 
+
+	(map 
+		(filter 1...10 lambda : c -> (<= c 5)) 
+		pow 2)
+
+	)

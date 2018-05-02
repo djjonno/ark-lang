@@ -8,6 +8,7 @@ public class NativeFunctions {
     env.define("random", random);
     env.define("stime", stime);
     env.define("len", len);
+    env.define("add", add);
   }
 
   /**
@@ -78,6 +79,27 @@ public class NativeFunctions {
         return ((ArkIndexable) item).length();
       }
 
+      return null;
+    }
+  };
+
+  private final static ArkCallable add = new ArkCallable() {
+    @Override
+    public int arity() {
+      return 0;
+    }
+
+    @Override
+    public boolean variadic() {
+      return true;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> arguments) {
+      ArkArray array = (ArkArray)arguments.get(0);
+      for (int i = 1; i < arguments.size(); ++i) {
+        array.add(arguments.get(i));
+      }
       return null;
     }
   };

@@ -215,7 +215,11 @@ public class Parser {
       }
     }
 
-    if (match(DOUBLE, CHAR)) {
+    if (match(CHAR)) {
+      return new Expr.Char(previous(), (Character)previous().literal);
+    }
+
+    if (match(DOUBLE)) {
       return new Expr.Literal(previous().literal);
     }
 

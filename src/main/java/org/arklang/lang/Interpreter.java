@@ -19,7 +19,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     try {
       for (Stmt stmt : statements) {
         if (promptMode && stmt instanceof Stmt.Expression) {
-          System.out.println(evaluate(((Stmt.Expression) stmt).expression));
+          Expr expr = ((Stmt.Expression) stmt).expression;
+          Object value = evaluate(expr);
+          if (value != null && !(expr instanceof Expr.Lambda)) {
+            System.out.println(value);
+          }
         } else {
           execute(stmt);
         }
@@ -88,7 +92,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
       Number Operations
        */
       case PLUS:
-        if (left instanceof String || right instanceof String) {
+        if (left instanceof ArkString || right instanceof ArkString) {
           return left.toString() + right.toString();
         }
         checkNumberOperands(expr.operator, left, right);
@@ -241,6 +245,12 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
         break;
       case BANG_EQUAL:
+        if (left instanceof ArkString || right instanceof ArkString) {
+          return !left.toString().equals(right.toString());
+        }
+        if (left instanceof Character || right instanceof Character) {
+          return !left.toString().equals(right.toString());
+        }
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
           return (int)left != (int)right;
@@ -256,6 +266,9 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
         break;
       case EQUAL_EQUAL:
+        if (left instanceof ArkString || right instanceof ArkString) {
+          return left.toString().equals(right.toString());
+        }
         checkNumberOperands(expr.operator, left, right);
         if (left instanceof Integer && right instanceof Integer) {
           return (int)left == (int)right;
@@ -385,6 +398,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Object visitCharExpr(Expr.Char expr) {
+    return expr.c;
+  }
+
+  @Override
   public Object visitIndexGetExpr(Expr.IndexGet expr) {
     Object indexee = evaluate(expr.indexee);
 
@@ -487,7 +505,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         environment.define(stmt.indexIterator.lexeme, index++);
       }
 
-      execute(stmt.body);
+      try {
+        execute(stmt.body);
+      } catch (BreakJump e) {
+        break;
+      }
     }
 
     return null;

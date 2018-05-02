@@ -29,6 +29,10 @@ public class ArkArray implements ArkIndexable, ArkEnumerable {
     return value;
   }
 
+  public void add(Object value) {
+    items.add(value);
+  }
+
   @Override
   public int length() {
     return items.size();
