@@ -123,12 +123,12 @@ Arrays are enumerable and can be used in a `for-in` enumerator expr.
 ##### Lambdas
 
 ```
-(lambda sum : a, b -> (+ a b))
+(lambda sum : a b -> (+ a b))
 (sum 4 6) ;; 10
 ```
 
 ```
-(lambda filter : c, f -> {
+(lambda filter : c f -> {
   let a = []
   (i:c) {
     if (f i) {
@@ -138,7 +138,7 @@ Arrays are enumerable and can be used in a `for-in` enumerator expr.
   send a
 })
 ;; filter nums greater than 3
-let nums = (filter [1,2,3,4,5], lambda : x -> (<= x 3))
+let nums = (filter [1,2,3,4,5] lambda : x -> (<= x 3))
 (print nums) ;; [1,2,3]
 ```
 
