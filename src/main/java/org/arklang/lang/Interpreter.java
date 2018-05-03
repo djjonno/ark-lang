@@ -53,7 +53,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
   }
 
-  private Object evaluate(Expr expr) {
+  public Object evaluate(Expr expr) {
     return expr.accept(this);
   }
 
@@ -267,6 +267,9 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         break;
       case EQUAL_EQUAL:
         if (left instanceof ArkString || right instanceof ArkString) {
+          return left.toString().equals(right.toString());
+        }
+        if (left instanceof Character || right instanceof Character) {
           return left.toString().equals(right.toString());
         }
         checkNumberOperands(expr.operator, left, right);

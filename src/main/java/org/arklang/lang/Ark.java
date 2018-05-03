@@ -12,7 +12,8 @@ public class Ark {
 
   private static final Interpreter interpreter = new Interpreter();
 
-  final static String version = "0.1";
+  final static String version = "0.0.1";
+  final static String runtime_version = "0.0.1";
   static boolean hadError = false;
   static boolean hadRuntimeError = false;
 
@@ -38,13 +39,13 @@ public class Ark {
     InputStreamReader input = new InputStreamReader(System.in);
     BufferedReader reader = new BufferedReader(input);
 
-    System.out.println();
     System.out.println("   _ _ / ");
-    System.out.println("  (// /( " + version);
-    System.out.println();
+    System.out.println("  (// /( ");
+    System.out.println("  Ark " + version + " dev build");
+    System.out.println("  Ark Runtime " + runtime_version + " cross platform (Java 8) [Apache-2.0 License]");
 
     for (;;) {
-      System.out.print("\033[0;1m>\033[0m  ");
+      System.out.print("\033[0;1m>\033[0m ");
       run(reader.readLine(), true);
 
       hadError = false;
