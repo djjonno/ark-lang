@@ -6,6 +6,8 @@
 # Ark Lang
 Functional language with Lisp style syntax and some syntactic sugar for great readability.
 
+[![Build Status](https://travis-ci.org/andjonno/ark-lang.svg?branch=master)](https://travis-ci.org/andjonno/ark-lang)
+
 #### Ark
 The idea of creating a whole unified platform to build software is something I find to be super exciting.  I am to 
 create a fully-fledged platform, end-to-end, including a comprehensive standard library.
