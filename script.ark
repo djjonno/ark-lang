@@ -49,7 +49,6 @@ let gen = (counter 10)
 	let a = []
 	for i in col {
 		if (f i) {
-			(out "hello")
 			(add a i)
 		}
 	}
@@ -66,9 +65,10 @@ let gen = (counter 10)
 (lambda pow : n exp -> (** n exp))
 
 (out 
-
+	;; filter numbers, greater than 5. 
+	;; raise them to power of 3
 	(map 
 		(filter 1...10 lambda : c -> (<= c 5)) 
-		pow 2)
+		pow 3)
 
 	)
