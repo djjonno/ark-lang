@@ -39,14 +39,15 @@ public class Ark {
     InputStreamReader input = new InputStreamReader(System.in);
     BufferedReader reader = new BufferedReader(input);
 
-    System.out.println("   _ _ / ");
-    System.out.println("  (// /( ");
-    System.out.println("  Ark " + version + " dev build");
-    System.out.println("  Ark Runtime " + runtime_version + " cross platform (Java 8) [Apache-2.0 License]");
+    System.out.println("   _   _ |  " + " ark " + version + " dev build");
+    System.out.println("  (_| |  |( " + " ark Runtime " + runtime_version + " cross platform (Java 8) [Apache-2.0 License]");
 
     for (;;) {
       System.out.print("\033[0;1m>\033[0m ");
-      run(reader.readLine(), true);
+      String line = reader.readLine();
+      if (line != null) {
+        run(line, true);
+      }
 
       hadError = false;
     }

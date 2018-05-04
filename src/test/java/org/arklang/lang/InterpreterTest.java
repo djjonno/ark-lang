@@ -328,7 +328,7 @@ public class InterpreterTest {
         {"hello", "world", false},
         {'h', 'h', true},
         {'h', 'g', false},
-//        {'h', ('h' - 'a'), true},
+//        {'h', 'h' - 0, true}, // comparison of char with ints
     };
 
     for (Object[] set : vals) {

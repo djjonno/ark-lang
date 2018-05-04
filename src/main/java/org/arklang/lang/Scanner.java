@@ -14,6 +14,7 @@ public class Scanner {
   private int start;
   private int current;
   private int line;
+  private int length;
   private static final Map<String, TokenType> keywords;
 
   static {
@@ -44,8 +45,9 @@ public class Scanner {
     keywords.put("print",   PRINT);
   }
 
-  public Scanner(String inSource) {
+  Scanner(String inSource) {
     source = inSource;
+    length = source.length();
     tokens = new ArrayList<>();
     start = 0;
     current = 0;
@@ -63,7 +65,7 @@ public class Scanner {
   }
 
   private boolean isAtEnd() {
-    return current >= source.length();
+    return current >= length;
   }
 
   private void scanToken() {
