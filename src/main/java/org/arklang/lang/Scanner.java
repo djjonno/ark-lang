@@ -11,10 +11,10 @@ public class Scanner {
 
   private final String source;
   private final List<Token> tokens;
+  private final int length;
   private int start;
   private int current;
   private int line;
-  private int length;
   private static final Map<String, TokenType> keywords;
 
   static {
