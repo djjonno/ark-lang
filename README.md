@@ -1,13 +1,9 @@
-```
- _ _ /
-(// /( 🦒
-```
-
 # Ark Lang
 Functional language with Lisp style syntax and some syntactic sugar for great readability.
 
 [![Build Status](https://travis-ci.org/andjonno/ark-lang.svg?branch=master)](https://travis-ci.org/andjonno/ark-lang) 
 [![Maintainability](https://api.codeclimate.com/v1/badges/672b07fb2b7a95a3474e/maintainability)](https://codeclimate.com/github/andjonno/ark-lang/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/672b07fb2b7a95a3474e/test_coverage)](https://codeclimate.com/github/andjonno/ark-lang/test_coverage)
 
 #### Ark
 The idea of creating a whole unified platform to build software is something I find to be super exciting.  I am to 
