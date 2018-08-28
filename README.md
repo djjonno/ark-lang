@@ -6,25 +6,17 @@ Functional language with Lisp style syntax and some syntactic sugar for great re
 [![Test Coverage](https://api.codeclimate.com/v1/badges/672b07fb2b7a95a3474e/test_coverage)](https://codeclimate.com/github/andjonno/ark-lang/test_coverage)
 
 #### Ark
-The idea of creating a whole unified platform to build software is something I find to be super exciting.  I am to 
-create a fully-fledged platform, end-to-end, including a comprehensive standard library.
-
-I want to emphasize performance of the programmer and the interpreter by adopting a simple Lisp like, context-free 
-grammar with a simple learning curve; We are aiming to keep the syntax light.
+Ark is a hobbyist language not to be taken seriously or used in production!
 
 Ark will eventually be strongly typed and will be a good hybrid between classical imperative OOP and Functional language
-styles - leaning more towards the functional paradigm - aim to get the best of both worlds.
+styles - leaning more towards the functional paradigm - aiming to get the best of both worlds.
 
 #### My Motivations
 ###### Yet another hobbyist lang.
 
-Why am I creating this language? Mostly to learn. I love de-mistifying things we programmers take for granted. 
+Why am I creating this language? Mostly to learn. I love de-mistifying things that we commonly take for granted. 
 Language implementation is no exception and there is so much to gain by having a better understanding of what goes into 
 building a programming language and how they work.
-
-Will this be production ready? Technically yes. The interpreter will eventually be written in C++ and should offer 
-performance on par with something like Python. Even though I am building this language for learning purposes, I will not
-be cutting corners just for the sake of getting something to work - it will be built correctly, for sure.
 
 ### Language Spec
 
@@ -211,6 +203,3 @@ from the left to the right. Rather than nesting function calls, expression are e
 1. Open Ark prompt `$ ./ark`
 2. Or, execute an ark file `$ ./ark [file]`
 3. ⌨ Have fun!
-
-#### Contributing
-If you happen to find this interesting, email me! I'd love to get people involved 🙂
