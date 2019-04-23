@@ -2,9 +2,9 @@ if (== 2 2) {
   print "2 equals 2"
 }
 
-(lambda sum | a, b -> (+ a b))
+(lambda sum : a b -> (+ a b))
 
-(lambda fib | n -> {
+(lambda fib : n -> {
   if (== n 0) send 0
   if (== n 1) send 1
   send (+ (fib (- n 2)) (fib (- n 1)))
@@ -16,4 +16,3 @@ print (fib 10)
 let a = 1,
   b = 10,
   c = 10
-
